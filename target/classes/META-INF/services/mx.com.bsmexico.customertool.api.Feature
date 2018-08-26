@@ -1,1 +1,0 @@
-mx.com.bsmexico.customertool.referencias.plugin.OpcionReferencias
