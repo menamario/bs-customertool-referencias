@@ -50,14 +50,29 @@ public class ReferenciaValidator extends LayoutModelValidator<Referencia> {
 
 	public Predicate<Referencia> referencia() {
 		return v -> {
-			return (v.getReferencia() != null && v.getReferencia().length()==6);
+			return (v.getReferencia() != null && v.getReferencia().length()==6 && NumberUtils.isDigits(v.getReferencia()));
 		};
 	}
 
 	@Override
 	public String getValidationDescription(String fieldName) {
-		// TODO Auto-generated method stub
-		return null;
+		String desc = StringUtils.EMPTY;
+		if (StringUtils.isNotBlank(fieldName)) {
+			switch (fieldName) {
+			case Referencia.FIELD_REFERENCIA:
+				desc = "En este campo debe Capturar un valor numerico de 6 posiciones p.e. 152623";
+				break;
+			case Referencia.FIELD_REFERENCIA_COMPLETA:
+				desc = "En este campo se mostrara la referencia completa incluyendo el digito verificador";
+				break;
+			case Referencia.FIELD_DIGITO_VERIFICADOR:
+				desc = "Digito Verificador calculado segun el algoritmo elegido";
+				break;
+			default:
+				break;
+			}
+		}
+		return desc;
 	}
 
 	@Override

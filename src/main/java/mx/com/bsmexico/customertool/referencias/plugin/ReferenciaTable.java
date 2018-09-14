@@ -8,15 +8,15 @@ import org.apache.commons.lang3.ArrayUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
-import mx.com.bsmexico.customertool.api.exporter.ExportSource;
-import mx.com.bsmexico.customertool.api.exporter.ImportTarget;
 import mx.com.bsmexico.customertool.api.layouts.control.EditableLayoutTable;
 import mx.com.bsmexico.customertool.api.layouts.model.validation.LayoutModelValidator;
+import mx.com.bsmexico.customertool.api.process.ExportSource;
+import mx.com.bsmexico.customertool.api.process.ImportTarget;
 
 public class ReferenciaTable extends EditableLayoutTable<Referencia>
 		implements ImportTarget<Referencia>, ExportSource<Referencia> {
 
-	private final int INITIAL_CAPACITY = 5;
+	private final int INITIAL_CAPACITY = 10;
 
 	public ReferenciaTable() throws IllegalArgumentException, InstantiationError {
 		super(Referencia.class);
@@ -110,6 +110,9 @@ public class ReferenciaTable extends EditableLayoutTable<Referencia>
 			for (String id : ids) {
 				ct = columnFactory.<String>getColumn(id, 100);
 				ct.prefWidthProperty().bind(widthProperty().multiply(0.3333333333333333));
+				if(id.equals(Referencia.FIELD_REFERENCIA_COMPLETA) || id.equals(Referencia.FIELD_DIGITO_VERIFICADOR)){
+					ct.setStyle("-fx-alignment: CENTER;");
+				}
 				getColumns().add(ct);
 			}
 		}

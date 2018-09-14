@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -12,12 +14,10 @@ import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -82,21 +82,20 @@ public class OpcionReferencias extends Feature {
 
 	@Override
 	public void launch() {
+		
+		getDesktop().updatePleca("#f0a21d", null);
 
 		Pane mainPane = new BorderPane();
 
 		mainPane.setPadding(new Insets(0, 20, 0, 20));
 
-		HBox headerBox1 = new HBox();
-		HBox headerBox2 = new HBox();
 
-		ImageView atras = null;
+
 		ImageView importarArchivo = null;
 		ImageView instrucciones = null;
 
 		try {
-			atras = new ImageView(new Image(this.getImageInput("/img/atras.png")));
-			importarArchivo = new ImageView(new Image(this.getImageInput("/img/importarArchivo.png")));
+			importarArchivo = new ImageView(new Image(this.getImageInput("/img/importarReferencias.png")));
 			importarArchivo.setPreserveRatio(true);
 			importarArchivo.setFitWidth(70);
 			instrucciones = new ImageView(new Image(this.getImageInput("/img/instrucciones.png")));
@@ -128,49 +127,48 @@ public class OpcionReferencias extends Feature {
 				"-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 13px;-fx-background-color: transparent;");
 		bImportarArchivo.setContentDisplay(ContentDisplay.TOP);
 
-		// bAtras.setOnMouseClicked(evt -> {
-		// getMenuNavigator().show();
-		// });
 
 		final FileChooser fileChooser = new FileChooser();
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel and Csv files (*.xls,*.csv)",
 				"*.csv", "*.xls");
 		fileChooser.getExtensionFilters().add(extFilter);
 
-		// headerBox1.getChildren().add(bAtras);
+		HBox headerBox1 = new HBox();
+		HBox headerBox2 = new HBox();
+		headerBox1.setSpacing(40);
+		Label l = new Label("    Generacion de Referencias    ");
+		l.setTextFill(Color.WHITE);
+		l.setStyle("-fx-background-color: #f0a21d;-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-border-radius: 0 0 10 10; -fx-background-radius: 0 0 10 10; ");
+		headerBox1.getChildren().add(l);
 		headerBox2.getChildren().add(bInstrucciones);
 		headerBox2.getChildren().add(bImportarArchivo);
-		headerBox2.setSpacing(30);
+		headerBox2.setSpacing(100);
 		HBox.setHgrow(headerBox2, Priority.ALWAYS);
 		headerBox2.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
 		headerBox1.getChildren().add(headerBox2);
+		headerBox1.setPadding(new Insets(0,30,0,0));
+		
 
 		BorderPane borderpane = new BorderPane();
 		borderpane.setPadding(new Insets(0, 20, 0, 20));
-		Label lFormato = new Label("Formato");
-		lFormato.setTextFill(Color.WHITE);
-		RadioButton rbTxt = new RadioButton("txt");
-		rbTxt.setTextFill(Color.WHITE);
-		RadioButton rbCsv = new RadioButton("csv");
-		rbCsv.setSelected(true);
-		rbCsv.setTextFill(Color.WHITE);
-		ToggleGroup tgFormato = new ToggleGroup();
-		rbCsv.setToggleGroup(tgFormato);
-		rbTxt.setToggleGroup(tgFormato);
-		rbTxt.setDisable(true);
+		
 
 		HBox hb = new HBox();
-		hb.setSpacing(10);
-
-		Label mensajeCsv = new Label("El archivo se guardara en formato csv       ");
-		mensajeCsv.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;-fx-font-weight: bold");
-		mensajeCsv.setTextFill(Color.WHITE);
+		hb.setSpacing(50);
+		
+		ObservableList<String> options = 
+			    FXCollections.observableArrayList(
+			        "Algoritmo 10"
+			    );
+			final ComboBox comboBox = new ComboBox(options);
+			comboBox.getSelectionModel().selectFirst();
+		hb.getChildren().add(comboBox);
 
 		Button bCalcular = new Button("Calcular");
 		bCalcular.setStyle(
-				"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
+				"-fx-background-color: #accaf3;  -fx-font-family: FranklinGothicLT;-fx-font-size: 15px;-fx-font-weight:bold");
 		bCalcular.setPrefWidth(140);
-		bCalcular.setTextFill(Color.WHITE);
+		bCalcular.setTextFill(Color.BLACK);
 
 		hb.getChildren().add(bCalcular);
 		hb.setAlignment(Pos.CENTER_RIGHT);
@@ -178,10 +176,11 @@ public class OpcionReferencias extends Feature {
 
 		Button bGuardar = new Button("Guardar");
 		bGuardar.setStyle(
-				"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
+				"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT;-fx-font-size: 15px;-fx-font-weight:bold");
 		bGuardar.setPrefWidth(140);
 		bGuardar.setTextFill(Color.WHITE);
 		hb.getChildren().add(bGuardar);
+		hb.setPadding(new Insets(0,15,0,0));
 
 		borderpane.setRight(hb);
 
@@ -263,48 +262,48 @@ public class OpcionReferencias extends Feature {
 							ReferenciaExporter exporter = new ReferenciaExporter(t);
 							try {
 								exporter.export(file);
+								Stage stage = new Stage();
+
+								StackPane canvas = new StackPane();
+								canvas.setPadding(new Insets(10));
+								canvas.setStyle("-fx-background-color:  #a9d42c;");
+								canvas.setPrefSize(512, 50);
+
+								stage.getIcons()
+										.add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
+								stage.setTitle("Archivos Bantotal - Beneficiarios - Archivo Guardado");
+
+								Label mensaje = new Label("El archivo fue guardado exitosamente");
+								mensaje.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;");
+								mensaje.setTextFill(Color.web("#777777"));
+
+								Button bContinuar = new Button("Continuar");
+								bContinuar.setStyle(
+										"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
+								bContinuar.setPrefWidth(140);
+								bContinuar.setTextFill(Color.WHITE);
+
+								bContinuar.setOnMouseClicked(evt -> {
+									stage.hide();
+								});
+
+								VBox vbox = new VBox();
+								vbox.setSpacing(50);
+								vbox.setAlignment(Pos.TOP_CENTER);
+								vbox.setPrefSize(512, 275);
+								// VBox.setVgrow(vbox, Priority.ALWAYS);
+								vbox.getChildren().add(canvas);
+								vbox.getChildren().add(mensaje);
+								vbox.getChildren().add(bContinuar);
+
+								stage.setScene(new Scene(vbox, 512, 275));
+								stage.setResizable(false);
+								stage.show();
 							} catch (Exception e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
 						}
-
-						Stage stage = new Stage();
-
-						StackPane canvas = new StackPane();
-						canvas.setPadding(new Insets(10));
-						canvas.setStyle("-fx-background-color:  #a9d42c;");
-						canvas.setPrefSize(512, 50);
-
-						stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
-						stage.setTitle("Archivos Bantotal - Beneficiarios - Archivo Guardado");
-
-						Label mensaje = new Label("El archivo fue guardado exitosamente");
-						mensaje.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;");
-						mensaje.setTextFill(Color.web("#777777"));
-
-						Button bContinuar = new Button("Continuar");
-						bContinuar.setStyle(
-								"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
-						bContinuar.setPrefWidth(140);
-						bContinuar.setTextFill(Color.WHITE);
-
-						bContinuar.setOnMouseClicked(evt -> {
-							stage.hide();
-						});
-
-						VBox vbox = new VBox();
-						vbox.setSpacing(50);
-						vbox.setAlignment(Pos.TOP_CENTER);
-						vbox.setPrefSize(512, 275);
-						// VBox.setVgrow(vbox, Priority.ALWAYS);
-						vbox.getChildren().add(canvas);
-						vbox.getChildren().add(mensaje);
-						vbox.getChildren().add(bContinuar);
-
-						stage.setScene(new Scene(vbox, 512, 275));
-						stage.setResizable(false);
-						stage.show();
 
 					}
 				} catch (Exception ex) {
@@ -325,8 +324,9 @@ public class OpcionReferencias extends Feature {
 				canvas.setStyle("-fx-background-color: #239d45;");
 				canvas.setPrefSize(800, 60);
 
-				Label instruccionesLabel = new Label(
-						"Banco Sabadell agradece su preferencia, a continuacion detallamos los pasos que debe seguir para capturar los datos de alta de beneficiario.");
+				Label instruccionesLabel = new Label("Algoritmo Base 10  (1 Dígito Verificador)\nProcedimiento para calcular el Dígito Verificador");
+				
+				
 				instruccionesLabel.setWrapText(true);
 				instruccionesLabel.setTextAlignment(TextAlignment.JUSTIFY);
 				instruccionesLabel
@@ -339,12 +339,48 @@ public class OpcionReferencias extends Feature {
 
 				TextArea textArea = new TextArea();
 				textArea.setText("\n"
-						+ "1) Revise que la configuracion regional de su sistema operativo este en Español (México)."
-						+ "\n\n2) Los datos que se capturan deben estar en mayusculas y sin caracteres especiales."
-						+ "\n\n3) Finalmente le pedimos validar que los datos marcados como obligatorios se encuentren con la información requerida."
-						+ "\n\n4) Al concluir la captura de beneficiarios, dar un click en el boton de Guardar, en seguida se abrira una ventana donde usted podrá guardar el archivo en la ruta que indique y con el nombre que desee."
-						+ "\n\n5) Al concluir el guardado correcto del archivo de Beneficiarios el siguiente paso es ingresar a su banca en linea de Banco Sabadell, para iniciar el proceso de Alta de Beneficiarios."
-						+ "\n\n6) Los Beneficiarios que se dan de alta estarán disponibles para transaccionar despues de 30 minutos.");
+						+"Algoritmo Base 10  (1 Dígito Verificador)"
+						+"\nProcedimiento para calcular el Dígito Verificador"
+
+						+"\n\nDATOS NECESARIOS PARA EL CÁLCULO:"
+
+						+"\n\nReferencia 	de 1 a 6 Dígitos mas 1 digito verificador."
+
+						+"\nEjemplo:"
+						+"\nSi la Referencia es igual a:     3142233"
+
+						+"\n\n1. Si la Referencia tiene una longitud mayor a 6 posiciones, se toman los primeros 6 dígitos de  la derecha sin contar el digito verificador."
+
+						+"\n\n314223"
+
+						+"\n\n2.	De derecha a izquierda se van multiplicando cada uno de los dígitos por los números 2, 3, 4, 5.. siempre iniciando la secuencia con el número 2 aun cuando el número a multiplicar sea 0 deberá tomarse en cuenta." 
+
+
+						+"\n\n3  1  4  2  2  3"
+						+"\n*  *  *  *  *  *"
+						+"\n7  6  5  4  3  2"
+
+						+"\n\n21  6 20  8  6  6"
+
+						+"\n\n2. Se suman todos los resultados de las multiplicaciones del punto 1."
+
+						+"\n\n21 + 6 + 20 + 8 + 6 + 6 = 67"  
+
+						+"\n\n3.	El resultado de la suma indicada en el punto 2, se divide entre 7."
+
+						+"\n\n        __9___"
+						+"\n 7     | 67   "
+						+"\n         4"
+
+						+"\n\n4.	El residuo de la división del punto 3 se le resta a 7 y el resultado será el dígito verificador."
+
+						+"\n\n7 - 4 = 3"
+						+"\nDígito Verificador: 3"
+
+						+"\n\n5.	A la referencia se le agregara el dígito verificador y esa será la línea de captura que recibirá el cajero en ventanilla." 
+
+
+						+"\n\nReferencia Completa: 3142233");
 				textArea.setEditable(false);
 				textArea.setWrapText(true);
 
@@ -365,15 +401,20 @@ public class OpcionReferencias extends Feature {
 		});
 
 		VBox vbox = new VBox(headerBox1, borderpane);
-		vbox.setSpacing(20);
+		vbox.setSpacing(40);
 
 		((BorderPane) mainPane).setTop(vbox);
 
 		t = new ReferenciaTable();
+		t.getStyleClass().add("tabla-referencias");
+		
 
-		t.setMaxSize(500, 400);
+		t.setMaxSize(650, 400);
 
 		((BorderPane) mainPane).setCenter(t);
+		BorderPane.setAlignment(t, Pos.CENTER_RIGHT);
+
+		BorderPane.setMargin(t, new Insets(0,30,0,0));
 		// BorderPane.setMargin(t, new Insets(25, 0, 0, 0));
 
 		bImportarArchivo.setOnAction(new EventHandler<ActionEvent>() {
