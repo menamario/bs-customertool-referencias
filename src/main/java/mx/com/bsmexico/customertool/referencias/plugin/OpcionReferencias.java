@@ -29,6 +29,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mx.com.bsmexico.customertool.api.Feature;
 import mx.com.bsmexico.customertool.api.Layout;
@@ -243,7 +244,10 @@ public class OpcionReferencias extends Feature {
 
 						stage.setScene(new Scene(vbox, 512, 275));
 						stage.setResizable(false);
-						stage.show();
+						
+						stage.initOwner(getDesktop().getStage());
+						stage.initModality(Modality.WINDOW_MODAL);
+						stage.showAndWait();
 
 					} else if (numRegistros > 0) {
 						String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
@@ -271,7 +275,7 @@ public class OpcionReferencias extends Feature {
 
 								stage.getIcons()
 										.add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
-								stage.setTitle("Archivos Bantotal - Beneficiarios - Archivo Guardado");
+								stage.setTitle("Generacion de Referencias - Archivo Guardado");
 
 								Label mensaje = new Label("El archivo fue guardado exitosamente");
 								mensaje.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;");
@@ -298,7 +302,9 @@ public class OpcionReferencias extends Feature {
 
 								stage.setScene(new Scene(vbox, 512, 275));
 								stage.setResizable(false);
-								stage.show();
+								stage.initOwner(getDesktop().getStage());
+								stage.initModality(Modality.WINDOW_MODAL);
+								stage.showAndWait();
 							} catch (Exception e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
@@ -335,7 +341,7 @@ public class OpcionReferencias extends Feature {
 				canvas.getChildren().add(instruccionesLabel);
 
 				stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
-				stage.setTitle("Archivos Bantotal - Beneficiarios - Instrucciones");
+				stage.setTitle("REferencias - Instrucciones");
 
 				TextArea textArea = new TextArea();
 				textArea.setText("\n"
@@ -394,8 +400,6 @@ public class OpcionReferencias extends Feature {
 				stage.setScene(new Scene(vbox, 600, 600));
 				stage.setResizable(false);
 				stage.show();
-				// Hide this current window (if this is what you want)
-				// ((Node)(event.getSource())).getScene().getWindow().hide();
 
 			}
 		});
@@ -427,8 +431,44 @@ public class OpcionReferencias extends Feature {
 				try {
 					benImporter.importFile(file);
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					Stage stage = new Stage();
+
+					Pane canvas = new Pane();
+					canvas.setPadding(new Insets(10));
+					canvas.setStyle("-fx-background-color:  #e90e5c;");
+					canvas.setPrefSize(512, 50);
+
+					stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
+					stage.setTitle("Generacion de Referencias - Formato de Archivo Incorrecto");
+
+					Label mensaje = new Label("El archivo no tiene el formato correcto");
+					mensaje.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;");
+					mensaje.setTextFill(Color.web("#777777"));
+
+					Button bContinuar = new Button("Continuar");
+					bContinuar.setStyle(
+							"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
+					bContinuar.setPrefWidth(140);
+					bContinuar.setTextFill(Color.WHITE);
+
+					bContinuar.setOnMouseClicked(evt -> {
+						stage.hide();
+					});
+
+					VBox vbox = new VBox();
+					vbox.setSpacing(50);
+					vbox.setAlignment(Pos.TOP_CENTER);
+					vbox.setPrefSize(512, 275);
+					// VBox.setVgrow(vbox, Priority.ALWAYS);
+					vbox.getChildren().add(canvas);
+					vbox.getChildren().add(mensaje);
+					vbox.getChildren().add(bContinuar);
+
+					stage.setScene(new Scene(vbox, 512, 275));
+					stage.setResizable(false);
+					stage.initOwner(getDesktop().getStage());
+					stage.initModality(Modality.WINDOW_MODAL);
+					stage.showAndWait();
 				}
 			}
 		});
