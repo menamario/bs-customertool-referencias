@@ -130,8 +130,8 @@ public class OpcionReferencias extends Feature {
 
 
 		final FileChooser fileChooser = new FileChooser();
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel and Csv files (*.xls,*.csv)",
-				"*.csv", "*.xls");
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files",
+				"*.xlsx", "*.xls");
 		fileChooser.getExtensionFilters().add(extFilter);
 
 		HBox headerBox1 = new HBox();
