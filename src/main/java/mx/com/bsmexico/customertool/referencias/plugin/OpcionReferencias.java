@@ -378,7 +378,7 @@ public class OpcionReferencias extends Feature {
 					try {
 						benImporter.importFile(file);
 					} catch (Exception e1) {
-						Stage stage = new Stage();
+						Stage stage = new Stage(StageStyle.UNDECORATED);
 
 						Pane canvas = new Pane();
 						canvas.setPadding(new Insets(10));
@@ -465,7 +465,7 @@ public class OpcionReferencias extends Feature {
 			t.refresh();
 
 			if (!isValid) {
-				Stage stage = new Stage();
+				Stage stage = new Stage(StageStyle.UNDECORATED);
 
 				Pane canvas = new Pane();
 				canvas.setPadding(new Insets(10));
@@ -524,7 +524,7 @@ public class OpcionReferencias extends Feature {
 					try {
 						exporter.export(file);
 						hashCodeGuardado = t.getItems().hashCode();
-						Stage stage = new Stage();
+						Stage stage = new Stage(StageStyle.UNDECORATED);
 
 						StackPane canvas = new StackPane();
 						canvas.setPadding(new Insets(10));
