@@ -20,22 +20,22 @@
 		<band height="20" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="138" height="20" uuid="ada06b00-e6cb-4cc0-979a-9ea190979cbe"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[Referencia calcular]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="138" y="0" width="138" height="20" uuid="853d28b2-b693-4ebf-82b3-c7907078334d"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[Referencia completa]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="276" y="0" width="138" height="20" uuid="8a4f2088-d1ec-4ccb-8525-9fc07990551f"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[Dígito verificador]]></text>
 			</staticText>
@@ -48,21 +48,21 @@
 		<band height="20" splitType="Immediate">
 			<textField>
 				<reportElement x="0" y="0" width="138" height="20" uuid="331a2d12-933e-4efd-9a73-434acc5da61d"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{referencia}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="138" y="0" width="138" height="20" uuid="7ce0b676-3bb4-47b8-84be-0082d0685541"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{referenciaCompleta}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="276" y="0" width="138" height="20" uuid="3888d7fc-bc54-44ba-9fdc-0550dacdc4c1"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{digitoVerificador}]]></textFieldExpression>
