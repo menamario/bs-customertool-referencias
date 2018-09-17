@@ -96,4 +96,17 @@ public class Referencia {
 		this.digitoVerificador.set(digitoVerificador);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((digitoVerificador.get() == null) ? 0 : digitoVerificador.get().hashCode());
+		result = prime * result + ((referencia.get() == null) ? 0 : referencia.get().hashCode());
+		result = prime * result + ((referenciaCompleta.get() == null) ? 0 : referenciaCompleta.get().hashCode());
+		return result;
+	}
+
 }
