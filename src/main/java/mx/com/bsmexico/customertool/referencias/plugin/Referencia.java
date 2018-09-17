@@ -95,6 +95,10 @@ public class Referencia {
 	public void setDigitoVerificador(String digitoVerificador) {
 		this.digitoVerificador.set(digitoVerificador);
 	}
+	
+	public SimpleStringProperty referenciaProperty(){
+		return referencia;
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
