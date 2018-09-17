@@ -2,6 +2,7 @@ package mx.com.bsmexico.customertool.referencias.plugin;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.nio.file.Paths;
 
@@ -37,6 +38,10 @@ import javafx.stage.StageStyle;
 import mx.com.bsmexico.customertool.api.Feature;
 import mx.com.bsmexico.customertool.api.Layout;
 import mx.com.bsmexico.customertool.api.NavRoute;
+import mx.com.bsmexico.customertool.api.report.ContextReport;
+import mx.com.bsmexico.customertool.api.report.ReportDataSourceFactory;
+import mx.com.bsmexico.customertool.api.report.ReportGenerator;
+import mx.com.bsmexico.customertool.api.report.ReportType;
 
 public class OpcionReferencias extends Feature {
 
@@ -512,8 +517,8 @@ public class OpcionReferencias extends Feature {
 				saveFile.setInitialDirectory(new File(currentPath));
 
 				// Set extension filter
-				FileChooser.ExtensionFilter sfFilter = new FileChooser.ExtensionFilter("csv files (*.csv)",
-						"*.csv");
+				FileChooser.ExtensionFilter sfFilter = new FileChooser.ExtensionFilter("Excel Files",
+						"*.xlsx");
 				saveFile.getExtensionFilters().add(sfFilter);
 
 				// Show save file dialog
@@ -523,6 +528,17 @@ public class OpcionReferencias extends Feature {
 					ReferenciaExporter exporter = new ReferenciaExporter(t);
 					try {
 						exporter.export(file);
+						
+						
+						final FileOutputStream fout = new FileOutputStream(file);
+						file.createNewFile();
+						final ContextReport context = new ContextReport();
+						context.setType(ReportType.XLSX);
+						ReportGenerator.generateFromCompiledReport("reports/reporteReferencias.jasper", context,
+								ReportDataSourceFactory.getBeanDataSource(t.getData()), fout);
+						fout.close();
+						
+						
 						hashCodeGuardado = t.getItems().hashCode();
 						Stage stage = new Stage(StageStyle.UNDECORATED);
 
@@ -584,6 +600,12 @@ public class OpcionReferencias extends Feature {
 		getMenuNavigator().show();
 		getDesktop().setWorkArea(null);
 		getDesktop().updatePleca("black", null);
+	}
+
+	@Override
+	public int getOrder() {
+		// TODO Auto-generated method stub
+		return 2;
 	}
 
 }
