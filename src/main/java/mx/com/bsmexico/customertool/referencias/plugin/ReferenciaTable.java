@@ -16,7 +16,7 @@ import mx.com.bsmexico.customertool.api.process.ImportTarget;
 public class ReferenciaTable extends EditableLayoutTable<Referencia>
 		implements ImportTarget<Referencia>, ExportSource<Referencia> {
 
-	private final int INITIAL_CAPACITY = 10;
+	private final int INITIAL_CAPACITY = 15;
 
 	public ReferenciaTable() throws IllegalArgumentException, InstantiationError {
 		super(Referencia.class);
@@ -39,6 +39,11 @@ public class ReferenciaTable extends EditableLayoutTable<Referencia>
 	@Override
 	public void setData(List<Referencia> data) {
 		ObservableList<Referencia> observableList = FXCollections.observableList(data);
+		if (observableList.size()<INITIAL_CAPACITY){
+			for(int i = 0; i < INITIAL_CAPACITY-observableList.size(); i++){
+				observableList.add(new Referencia());
+			} 
+		}
 		setItems(observableList);
 
 	}
