@@ -146,23 +146,21 @@ public class OpcionReferencias extends Feature {
 
 				StackPane canvas = new StackPane();
 				canvas.setPadding(new Insets(10));
-				canvas.setStyle("-fx-background-color:  #f4b342;");
-				canvas.setPrefSize(512, 50);
-
-				stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
-				stage.setTitle("Archivos Bantotal - Dispersion - Cambios no guardados");
+				canvas.setStyle("-fx-background-color: #e90e5c;");
+				canvas.setPrefSize(512, 54);
 
 				Label mensaje = new Label(
-						"Si abandona esta pantalla los cambios no guardados se perderan ¿Desea guardarlos?");
+						"¿Quieres guardar los cambios realizados en el archivo?");
 				mensaje.setWrapText(true);
 				mensaje.setTextAlignment(TextAlignment.CENTER);
 				mensaje.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;");
 				mensaje.setTextFill(Color.web("#777777"));
+				mensaje.setPrefWidth(400);
 
-				Button bGuardar = new Button("Si, deseo guardarlos");
-				bGuardar.setStyle(
-						"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
-				bGuardar.setPrefWidth(200);
+				Button bGuardar = new Button("Guardar");
+				bGuardar.setStyle("-fx-font-family: FranklinGothicLT;	-fx-font-size: 12.0px;	-fx-border-radius: 8.0px;	-fx-background-color: #006dff;	-fx-border-width: 1.0px;	-fx-border-color: #979797;	-fx-font-weight:bold;	-fx-background-radius: 8.0px;");
+				bGuardar.setPrefSize(140,40);
+				
 				bGuardar.setTextFill(Color.WHITE);
 
 				bGuardar.setOnMouseClicked(ev -> {
@@ -177,11 +175,11 @@ public class OpcionReferencias extends Feature {
 					});
 				});
 
-				Button bSalir = new Button("No, no los necesito");
+				Button bSalir = new Button("No guardar");
 				bSalir.setStyle(
-						"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
-				bSalir.setPrefWidth(200);
-				bSalir.setTextFill(Color.WHITE);
+						"-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 12px;  -fx-border-radius: 8px;-fx-background-color: rgba(255, 255, 255, 0.8);-fx-border-width: 1px;-fx-border-color: #006dff;-fx-font-weight:bold;-fx-background-radius: 8px");
+				bSalir.setPrefSize(140,40);
+				bSalir.setTextFill(Color.web("#006dff"));
 
 				bSalir.setOnMouseClicked(ev -> {
 					stage.hide();
@@ -191,20 +189,20 @@ public class OpcionReferencias extends Feature {
 				});
 
 				HBox opciones = new HBox();
-				opciones.getChildren().addAll(bGuardar, bSalir);
+				opciones.getChildren().addAll(bSalir,bGuardar);
 				opciones.setAlignment(Pos.CENTER);
-				opciones.setSpacing(40);
+				opciones.setSpacing(35);
 
 				VBox vbox = new VBox();
 				vbox.setSpacing(50);
 				vbox.setAlignment(Pos.TOP_CENTER);
-				vbox.setPrefSize(512, 275);
+				vbox.setPrefSize(512, 345);
 				// VBox.setVgrow(vbox, Priority.ALWAYS);
 				vbox.getChildren().add(canvas);
 				vbox.getChildren().add(mensaje);
 				vbox.getChildren().add(opciones);
 
-				stage.setScene(new Scene(vbox, 512, 275));
+				stage.setScene(new Scene(vbox, 512, 345));
 				stage.setResizable(false);
 				stage.initOwner(getDesktop().getStage());
 				stage.initModality(Modality.WINDOW_MODAL);
@@ -224,7 +222,7 @@ public class OpcionReferencias extends Feature {
 		Label l = new Label("    Generacion de Referencias    ");
 		l.setTextFill(Color.WHITE);
 		l.setStyle(
-				"-fx-background-color: #f0a21d;-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-border-radius: 0 0 10 10; -fx-background-radius: 0 0 10 10; ");
+				"-fx-background-color: #f0a21d;-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-border-radius: 0 0 5 5; -fx-background-radius: 0 0 5 5; ");
 		headerBox1.getChildren().add(l);
 		headerBox2.getChildren().add(bInstrucciones);
 		headerBox2.getChildren().add(bImportarArchivo);
@@ -398,9 +396,8 @@ public class OpcionReferencias extends Feature {
 						mensaje.setTextFill(Color.web("#777777"));
 
 						Button bContinuar = new Button("Continuar");
-						bContinuar.setStyle(
-								"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
-						bContinuar.setPrefWidth(140);
+						bContinuar.setStyle("-fx-font-family: FranklinGothicLT;	-fx-font-size: 12.0px;	-fx-border-radius: 8.0px;	-fx-background-color: #006dff;	-fx-border-width: 1.0px;	-fx-border-color: #979797;	-fx-font-weight:bold;	-fx-background-radius: 8.0px;");
+						bContinuar.setPrefSize(140,40);
 						bContinuar.setTextFill(Color.WHITE);
 
 						bContinuar.setOnMouseClicked(evt -> {
@@ -485,9 +482,8 @@ public class OpcionReferencias extends Feature {
 				mensaje.setTextFill(Color.web("#777777"));
 
 				Button bContinuar = new Button("Continuar");
-				bContinuar.setStyle(
-						"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
-				bContinuar.setPrefWidth(140);
+				bContinuar.setStyle("-fx-font-family: FranklinGothicLT;	-fx-font-size: 12.0px;	-fx-border-radius: 8.0px;	-fx-background-color: #006dff;	-fx-border-width: 1.0px;	-fx-border-color: #979797;	-fx-font-weight:bold;	-fx-background-radius: 8.0px;");
+				bContinuar.setPrefSize(140,40);
 				bContinuar.setTextFill(Color.WHITE);
 
 				bContinuar.setOnMouseClicked(evt -> {
@@ -556,9 +552,8 @@ public class OpcionReferencias extends Feature {
 						mensaje.setTextFill(Color.web("#777777"));
 
 						Button bContinuar = new Button("Continuar");
-						bContinuar.setStyle(
-								"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
-						bContinuar.setPrefWidth(140);
+						bContinuar.setStyle("-fx-font-family: FranklinGothicLT;	-fx-font-size: 12.0px;	-fx-border-radius: 8.0px;	-fx-background-color: #006dff;	-fx-border-width: 1.0px;	-fx-border-color: #979797;	-fx-font-weight:bold;	-fx-background-radius: 8.0px;");
+						bContinuar.setPrefSize(140,40);
 						bContinuar.setTextFill(Color.WHITE);
 
 						bContinuar.setOnMouseClicked(evt -> {
