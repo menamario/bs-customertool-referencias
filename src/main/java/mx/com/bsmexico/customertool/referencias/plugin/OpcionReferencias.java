@@ -23,6 +23,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -132,10 +134,10 @@ public class OpcionReferencias extends Feature {
 		Button bAtras = new Button();
 		Button bInstrucciones = new Button();
 		Button bImportarArchivo = new Button();
-		Button bCerrar = new Button();
 
 		bCerrar.setGraphic(cerrar);
 		bCerrar.setStyle("-fx-background-color: transparent;");
+		StackPane.setAlignment(bCerrar, Pos.TOP_RIGHT);
 
 		bAtras.setGraphic(atras);
 		bAtras.setStyle("-fx-background-color: transparent;");
@@ -153,19 +155,19 @@ public class OpcionReferencias extends Feature {
 		bImportarArchivo.setStyle(
 				"-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 13px;-fx-background-color: transparent;");
 		bImportarArchivo.setContentDisplay(ContentDisplay.TOP);
-		
-		
+
 		bAtras.setOnMouseClicked(evt -> {
 			if (t.getItems().hashCode() == hashCodeGuardado) {
 				salir();
 			} else {
+				getDesktop().opacar();
 				Stage stage = new Stage(StageStyle.UNDECORATED);
 
 				StackPane canvas = new StackPane();
 				canvas.setPadding(new Insets(5));
 				canvas.setStyle("-fx-background-color: #e90e5c;");
 				canvas.setPrefSize(512, 54);
-				
+
 				canvas.getChildren().add(bCerrar);
 				StackPane.setAlignment(bCerrar, Pos.TOP_RIGHT);
 
@@ -173,8 +175,7 @@ public class OpcionReferencias extends Feature {
 					stage.hide();
 				});
 
-				Label mensaje = new Label(
-						"¿Quieres guardar los cambios realizados en el archivo?");
+				Label mensaje = new Label("¿Quieres guardar los cambios realizados en el archivo?");
 				mensaje.setWrapText(true);
 				mensaje.setTextAlignment(TextAlignment.CENTER);
 				mensaje.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;");
@@ -182,9 +183,10 @@ public class OpcionReferencias extends Feature {
 				mensaje.setPrefWidth(400);
 
 				Button bGuardar = new Button("Guardar");
-				bGuardar.setStyle("-fx-font-family: FranklinGothicLT;	-fx-font-size: 12.0px;	-fx-border-radius: 8.0px;	-fx-background-color: #006dff;	-fx-border-width: 1.0px;	-fx-border-color: #979797;	-fx-font-weight:bold;	-fx-background-radius: 8.0px;");
-				bGuardar.setPrefSize(140,40);
-				
+				bGuardar.setStyle(
+						"-fx-font-family: FranklinGothicLT;	-fx-font-size: 12.0px;	-fx-border-radius: 8.0px;	-fx-background-color: #006dff;	-fx-border-width: 1.0px;	-fx-border-color: #979797;	-fx-font-weight:bold;	-fx-background-radius: 8.0px;");
+				bGuardar.setPrefSize(140, 40);
+
 				bGuardar.setTextFill(Color.WHITE);
 
 				bGuardar.setOnMouseClicked(ev -> {
@@ -202,7 +204,7 @@ public class OpcionReferencias extends Feature {
 				Button bSalir = new Button("No guardar");
 				bSalir.setStyle(
 						"-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 12px;  -fx-border-radius: 8px;-fx-background-color: rgba(255, 255, 255, 0.8);-fx-border-width: 1px;-fx-border-color: #006dff;-fx-font-weight:bold;-fx-background-radius: 8px");
-				bSalir.setPrefSize(140,40);
+				bSalir.setPrefSize(140, 40);
 				bSalir.setTextFill(Color.web("#006dff"));
 
 				bSalir.setOnMouseClicked(ev -> {
@@ -213,7 +215,7 @@ public class OpcionReferencias extends Feature {
 				});
 
 				HBox opciones = new HBox();
-				opciones.getChildren().addAll(bSalir,bGuardar);
+				opciones.getChildren().addAll(bSalir, bGuardar);
 				opciones.setAlignment(Pos.CENTER);
 				opciones.setSpacing(35);
 
@@ -230,7 +232,15 @@ public class OpcionReferencias extends Feature {
 				stage.setResizable(false);
 				stage.initOwner(getDesktop().getStage());
 				stage.initModality(Modality.WINDOW_MODAL);
+				stage.setX(getDesktop().getStage().getX()+((getDesktop().getStage().getWidth()-512)/2));
+				stage.setY(getDesktop().getStage().getY()+((getDesktop().getStage().getHeight()-345)/2));
+				stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+			        if (KeyCode.ESCAPE == event.getCode()) {
+			            stage.close();
+			        }
+			    });
 				stage.showAndWait();
+				getDesktop().desOpacar();
 
 			}
 		});
@@ -311,6 +321,7 @@ public class OpcionReferencias extends Feature {
 				canvas.setPadding(new Insets(10));
 				canvas.setStyle("-fx-background-color: #239d45;");
 				canvas.setPrefSize(800, 60);
+				canvas.setMinHeight(54);
 
 				Label instruccionesLabel = new Label(
 						"Algoritmo Base 10  (1 Dígito Verificador)\nProcedimiento para calcular el Dígito Verificador");
@@ -319,17 +330,19 @@ public class OpcionReferencias extends Feature {
 				instruccionesLabel.setTextAlignment(TextAlignment.JUSTIFY);
 				instruccionesLabel
 						.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-font-weight: bold");
-				instruccionesLabel.setTextFill(Color.WHITE);
-				canvas.getChildren().add(instruccionesLabel);
+				instruccionesLabel.setTextFill(Color.web("#828488"));
+				StackPane p = new StackPane();
+				p.setPrefSize(1000, 160);
+				p.setPadding(new Insets(20, 0, 20, 0));
+				p.setStyle("-fx-background-color: #d9d9d9");
+				p.getChildren().add(instruccionesLabel);
+				StackPane.setAlignment(instruccionesLabel, Pos.CENTER_LEFT);
 
 				stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
-				stage.setTitle("REferencias - Instrucciones");
+				stage.setTitle("Referencias - Instrucciones");
 
 				TextArea textArea = new TextArea();
-				textArea.setText("\n" + "Algoritmo Base 10  (1 Dígito Verificador)"
-						+ "\nProcedimiento para calcular el Dígito Verificador"
-
-						+ "\n\nDATOS NECESARIOS PARA EL CÁLCULO:"
+				textArea.setText("\nDATOS NECESARIOS PARA EL CÁLCULO:"
 
 						+ "\n\nReferencia 	de 1 a 6 Dígitos mas 1 digito verificador."
 
@@ -368,6 +381,7 @@ public class OpcionReferencias extends Feature {
 				vbox.setPrefSize(600, 600);
 				VBox.setVgrow(vbox, Priority.ALWAYS);
 				vbox.getChildren().add(canvas);
+				vbox.getChildren().add(p);
 				vbox.getChildren().add(textArea);
 
 				stage.setScene(new Scene(vbox, 600, 600));
@@ -400,18 +414,19 @@ public class OpcionReferencias extends Feature {
 				String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
 				fileChooser.setInitialDirectory(new File(currentPath));
 				File file = fileChooser.showOpenDialog(getDesktop().getStage());
-				if (file!=null){
+				if (file != null) {
 					ReferenciaImporter benImporter = new ReferenciaImporter(t);
 					try {
 						benImporter.importFile(file);
 					} catch (Exception e1) {
+						getDesktop().opacar();
 						Stage stage = new Stage(StageStyle.UNDECORATED);
 
 						Pane canvas = new Pane();
 						canvas.setPadding(new Insets(5));
 						canvas.setStyle("-fx-background-color:  #e90e5c;");
 						canvas.setPrefSize(512, 54);
-						
+
 						canvas.getChildren().add(bCerrar);
 						StackPane.setAlignment(bCerrar, Pos.TOP_RIGHT);
 
@@ -427,8 +442,9 @@ public class OpcionReferencias extends Feature {
 						mensaje.setTextFill(Color.web("#777777"));
 
 						Button bContinuar = new Button("Continuar");
-						bContinuar.setStyle("-fx-font-family: FranklinGothicLT;	-fx-font-size: 12.0px;	-fx-border-radius: 8.0px;	-fx-background-color: #006dff;	-fx-border-width: 1.0px;	-fx-border-color: #979797;	-fx-font-weight:bold;	-fx-background-radius: 8.0px;");
-						bContinuar.setPrefSize(140,40);
+						bContinuar.setStyle(
+								"-fx-font-family: FranklinGothicLT;	-fx-font-size: 12.0px;	-fx-border-radius: 8.0px;	-fx-background-color: #006dff;	-fx-border-width: 1.0px;	-fx-border-color: #979797;	-fx-font-weight:bold;	-fx-background-radius: 8.0px;");
+						bContinuar.setPrefSize(140, 40);
 						bContinuar.setTextFill(Color.WHITE);
 
 						bContinuar.setOnMouseClicked(evt -> {
@@ -442,7 +458,7 @@ public class OpcionReferencias extends Feature {
 						// VBox.setVgrow(vbox, Priority.ALWAYS);
 						vbox.getChildren().add(canvas);
 						vbox.getChildren().add(error);
-						mensaje.setPadding(new Insets(0,0,35,0));
+						mensaje.setPadding(new Insets(0, 0, 35, 0));
 						vbox.getChildren().add(mensaje);
 						vbox.getChildren().add(bContinuar);
 
@@ -450,7 +466,15 @@ public class OpcionReferencias extends Feature {
 						stage.setResizable(false);
 						stage.initOwner(getDesktop().getStage());
 						stage.initModality(Modality.WINDOW_MODAL);
+						stage.setX(getDesktop().getStage().getX()+((getDesktop().getStage().getWidth()-512)/2));
+						stage.setY(getDesktop().getStage().getY()+((getDesktop().getStage().getHeight()-345)/2));
+						stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+					        if (KeyCode.ESCAPE == event.getCode()) {
+					            stage.close();
+					        }
+					    });
 						stage.showAndWait();
+						getDesktop().desOpacar();
 					}
 				}
 			}
@@ -485,7 +509,7 @@ public class OpcionReferencias extends Feature {
 		}
 
 	}
-	
+
 	private boolean guardar() {
 		try {
 			calcularDigitoVerificador();
@@ -500,11 +524,12 @@ public class OpcionReferencias extends Feature {
 			t.refresh();
 
 			if (!isValid) {
+				getDesktop().opacar();
 				Stage stage = new Stage(StageStyle.UNDECORATED);
 
-				Pane canvas = new Pane();
+				StackPane canvas = new StackPane();
 				canvas.setPadding(new Insets(5));
-				canvas.setStyle("-fx-background-color:  #e90e5c;");
+				canvas.setStyle("-fx-background-color: #e90e5c;");
 				canvas.setPrefSize(512, 54);
 				
 				canvas.getChildren().add(bCerrar);
@@ -514,15 +539,13 @@ public class OpcionReferencias extends Feature {
 					stage.hide();
 				});
 
-				stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
-				stage.setTitle("Archivos Bantotal - Beneficiarios - Datos Incorrectos");
-
 				Label mensaje = new Label("Error en los datos proporcionados");
 				mensaje.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 20px;");
 				mensaje.setTextFill(Color.web("#777777"));
 
 				Button bContinuar = new Button("Continuar");
-				bContinuar.setStyle("-fx-font-family: FranklinGothicLT;	-fx-font-size: 12.0px;	-fx-border-radius: 8.0px;	-fx-background-color: #006dff;	-fx-border-width: 1.0px;	-fx-border-color: #979797;	-fx-font-weight:bold;	-fx-background-radius: 8.0px;");
+				bContinuar.setStyle(
+						"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
 				bContinuar.setPrefSize(140,40);
 				bContinuar.setTextFill(Color.WHITE);
 
@@ -531,10 +554,9 @@ public class OpcionReferencias extends Feature {
 				});
 
 				VBox vbox = new VBox();
+				vbox.setPrefSize(512, 345);
 				vbox.setSpacing(25);
 				vbox.setAlignment(Pos.TOP_CENTER);
-				vbox.setPrefSize(512, 345);
-				// VBox.setVgrow(vbox, Priority.ALWAYS);
 				vbox.getChildren().add(canvas);
 				vbox.getChildren().add(error);
 				mensaje.setPadding(new Insets(0,0,35,0));
@@ -543,10 +565,17 @@ public class OpcionReferencias extends Feature {
 
 				stage.setScene(new Scene(vbox, 512, 345));
 				stage.setResizable(false);
-
 				stage.initOwner(getDesktop().getStage());
 				stage.initModality(Modality.WINDOW_MODAL);
+				stage.setX(getDesktop().getStage().getX()+((getDesktop().getStage().getWidth()-512)/2));
+				stage.setY(getDesktop().getStage().getY()+((getDesktop().getStage().getHeight()-345)/2));
+				stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+			        if (KeyCode.ESCAPE == event.getCode()) {
+			            stage.close();
+			        }
+			    });
 				stage.showAndWait();
+				getDesktop().desOpacar();
 				return false;
 
 			} else if (numRegistros > 0) {
@@ -555,8 +584,7 @@ public class OpcionReferencias extends Feature {
 				saveFile.setInitialDirectory(new File(currentPath));
 
 				// Set extension filter
-				FileChooser.ExtensionFilter sfFilter = new FileChooser.ExtensionFilter("Excel Files",
-						"*.xlsx");
+				FileChooser.ExtensionFilter sfFilter = new FileChooser.ExtensionFilter("Excel Files", "*.xlsx");
 				saveFile.getExtensionFilters().add(sfFilter);
 
 				// Show save file dialog
@@ -566,8 +594,7 @@ public class OpcionReferencias extends Feature {
 					ReferenciaExporter exporter = new ReferenciaExporter(t);
 					try {
 						exporter.export(file);
-						
-						
+
 						final FileOutputStream fout = new FileOutputStream(file);
 						file.createNewFile();
 						final ContextReport context = new ContextReport();
@@ -575,16 +602,16 @@ public class OpcionReferencias extends Feature {
 						ReportGenerator.generateFromCompiledReport("reports/reporteReferencias.jasper", context,
 								ReportDataSourceFactory.getBeanDataSource(t.getData()), fout);
 						fout.close();
-						
-						
+
 						hashCodeGuardado = t.getItems().hashCode();
+						getDesktop().opacar();
 						Stage stage = new Stage(StageStyle.UNDECORATED);
 
 						StackPane canvas = new StackPane();
 						canvas.setPadding(new Insets(5));
 						canvas.setStyle("-fx-background-color:  #a9d42c;");
 						canvas.setPrefSize(512, 54);
-						
+
 						canvas.getChildren().add(bCerrar);
 						StackPane.setAlignment(bCerrar, Pos.TOP_RIGHT);
 
@@ -592,8 +619,7 @@ public class OpcionReferencias extends Feature {
 							stage.hide();
 						});
 
-						stage.getIcons()
-								.add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
+						stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
 						stage.setTitle("Generacion de Referencias - Archivo Guardado");
 
 						Label mensaje = new Label("El archivo fue guardado exitosamente");
@@ -601,8 +627,9 @@ public class OpcionReferencias extends Feature {
 						mensaje.setTextFill(Color.web("#777777"));
 
 						Button bContinuar = new Button("Continuar");
-						bContinuar.setStyle("-fx-font-family: FranklinGothicLT;	-fx-font-size: 12.0px;	-fx-border-radius: 8.0px;	-fx-background-color: #006dff;	-fx-border-width: 1.0px;	-fx-border-color: #979797;	-fx-font-weight:bold;	-fx-background-radius: 8.0px;");
-						bContinuar.setPrefSize(140,40);
+						bContinuar.setStyle(
+								"-fx-font-family: FranklinGothicLT;	-fx-font-size: 12.0px;	-fx-border-radius: 8.0px;	-fx-background-color: #006dff;	-fx-border-width: 1.0px;	-fx-border-color: #979797;	-fx-font-weight:bold;	-fx-background-radius: 8.0px;");
+						bContinuar.setPrefSize(140, 40);
 						bContinuar.setTextFill(Color.WHITE);
 
 						bContinuar.setOnMouseClicked(evt -> {
@@ -615,8 +642,8 @@ public class OpcionReferencias extends Feature {
 						vbox.setPrefSize(512, 345);
 						// VBox.setVgrow(vbox, Priority.ALWAYS);
 						vbox.getChildren().add(canvas);
-						vbox.getChildren().add(error);
-						mensaje.setPadding(new Insets(0,0,35,0));
+						vbox.getChildren().add(check);
+						mensaje.setPadding(new Insets(0, 0, 35, 0));
 						vbox.getChildren().add(mensaje);
 						vbox.getChildren().add(bContinuar);
 
@@ -624,7 +651,15 @@ public class OpcionReferencias extends Feature {
 						stage.setResizable(false);
 						stage.initOwner(getDesktop().getStage());
 						stage.initModality(Modality.WINDOW_MODAL);
+						stage.setX(getDesktop().getStage().getX()+((getDesktop().getStage().getWidth()-512)/2));
+						stage.setY(getDesktop().getStage().getY()+((getDesktop().getStage().getHeight()-345)/2));
+						stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+					        if (KeyCode.ESCAPE == event.getCode()) {
+					            stage.close();
+					        }
+					    });
 						stage.showAndWait();
+						getDesktop().desOpacar();
 						return true;
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
