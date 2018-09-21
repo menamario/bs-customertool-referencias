@@ -51,28 +51,28 @@
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Immediate">
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="138" height="20" uuid="331a2d12-933e-4efd-9a73-434acc5da61d"/>
 				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{referencia}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="138" y="0" width="138" height="20" uuid="7ce0b676-3bb4-47b8-84be-0082d0685541"/>
 				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{referenciaCompleta}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="276" y="0" width="138" height="20" uuid="3888d7fc-bc54-44ba-9fdc-0550dacdc4c1"/>
 				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{digitoVerificador}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="414" y="0" width="198" height="20" uuid="7c1f4b9f-b2d7-4d2c-b1d1-c8dcccb3e5c6"/>
 				<textFieldExpression><![CDATA[$F{comentarios}]]></textFieldExpression>
 			</textField>
