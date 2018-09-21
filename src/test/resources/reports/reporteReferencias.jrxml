@@ -6,6 +6,7 @@
 	<field name="referencia" class="java.lang.String"/>
 	<field name="referenciaCompleta" class="java.lang.String"/>
 	<field name="digitoVerificador" class="java.lang.String"/>
+	<field name="comentarios" class="java.lang.String"/>
 	<variable name="countHeader" class="java.lang.Integer" resetType="None" incrementType="Column" calculation="Count">
 		<variableExpression><![CDATA[]]></variableExpression>
 		<initialValueExpression><![CDATA[0]]></initialValueExpression>
@@ -39,6 +40,10 @@
 				</textElement>
 				<text><![CDATA[Dígito verificador]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="414" y="0" width="198" height="20" uuid="d988161c-6b45-444a-b8b7-94eba7e96f93"/>
+				<text><![CDATA[Comentarios]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -66,6 +71,10 @@
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{digitoVerificador}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="414" y="0" width="198" height="20" uuid="7c1f4b9f-b2d7-4d2c-b1d1-c8dcccb3e5c6"/>
+				<textFieldExpression><![CDATA[$F{comentarios}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
