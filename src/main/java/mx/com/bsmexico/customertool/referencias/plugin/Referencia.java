@@ -21,15 +21,19 @@ public class Referencia {
 	public static final String FIELD_REFERENCIA = "REFERENCIA";
 	public static final String FIELD_REFERENCIA_COMPLETA = "REFERENCIA_COMPLETA";
 	public static final String FIELD_DIGITO_VERIFICADOR = "DIGITO_VERIFICADOR";
+	public static final String FIELD_COMENTARIOS = "COMENTARIOS";
 	
 	@LayoutField(name = FIELD_REFERENCIA, title = "Referencia", length = 6)
 	private SimpleStringProperty referencia;
 
-	@LayoutField(name = FIELD_REFERENCIA_COMPLETA, title = "Referencia Completa", length = 10, editable = false)
+	@LayoutField(name = FIELD_REFERENCIA_COMPLETA, title = "Referencia completa", length = 10, editable = false)
 	private SimpleStringProperty referenciaCompleta;
 	
-	@LayoutField(name = FIELD_DIGITO_VERIFICADOR, title = "Digito Verificador", length = 10, editable = false)
+	@LayoutField(name = FIELD_DIGITO_VERIFICADOR, title = "Dígito verificador", length = 10, editable = false)
 	private SimpleStringProperty digitoVerificador;
+	
+	@LayoutField(name = FIELD_COMENTARIOS, title = "Comentarios", length=40)
+	private SimpleStringProperty comentarios;
 
 	private Map<String, Boolean> estatus = new HashMap<String, Boolean>();
 	private Map<String, String> tooltips = new HashMap<String, String>();
@@ -53,6 +57,8 @@ public class Referencia {
 		estatus.put("numLinea", true);
 		digitoVerificador = new SimpleStringProperty();
 		estatus.put("bancoParticipante", true);
+		comentarios = new SimpleStringProperty();
+		estatus.put("comentarios", true);
 	}
 
 	public Map<String, Boolean> getEstatus() {
@@ -96,8 +102,21 @@ public class Referencia {
 		this.digitoVerificador.set(digitoVerificador);
 	}
 	
+	public String getComentarios() {
+		return comentarios.get();
+	}
+
+
+	public void setComentarios(String comentarios) {
+		this.comentarios.set(comentarios);
+	}
+	
 	public SimpleStringProperty referenciaProperty(){
 		return referencia;
+	}
+	
+	public SimpleStringProperty comentariosProperty(){
+		return comentarios;
 	}
 
 	/* (non-Javadoc)

@@ -19,8 +19,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -52,6 +56,8 @@ public class OpcionReferencias extends Feature {
 	Button bCerrar = new Button();
 	ImageView error = new ImageView();
 	ImageView check = new ImageView();
+	double xOffset=0;
+	double yOffset=0;
 
 	public String getNombreMenu() {
 		// TODO Auto-generated method stub
@@ -117,6 +123,8 @@ public class OpcionReferencias extends Feature {
 			check.setPreserveRatio(true);
 			check.setFitWidth(66);
 			atras = new ImageView(new Image(this.getImageInput("/img/atras.png")));
+			atras.setPreserveRatio(true);
+			atras.setFitWidth(40);
 			cerrar = new ImageView(new Image(this.getImageInput("/img/close.png")));
 			cerrar.setPreserveRatio(true);
 			cerrar.setFitWidth(25);
@@ -315,28 +323,48 @@ public class OpcionReferencias extends Feature {
 		bInstrucciones.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 
-				Stage stage = new Stage();
+				Stage stage = new Stage(StageStyle.UNDECORATED);
 
 				StackPane canvas = new StackPane();
 				canvas.setPadding(new Insets(10));
 				canvas.setStyle("-fx-background-color: #239d45;");
 				canvas.setPrefSize(800, 60);
 				canvas.setMinHeight(54);
+				canvas.setOnMousePressed(e -> {
+					xOffset = e.getSceneX();
+					yOffset = e.getSceneY();
 
+		        });
+				
+				canvas.setOnMouseDragged(e -> {
+					stage.setX(e.getScreenX() - xOffset);
+					stage.setY(e.getScreenY() - yOffset - 20);
+
+		        });
+				
+				canvas.getChildren().add(bCerrar);
+				StackPane.setAlignment(bCerrar, Pos.TOP_RIGHT);
+
+				bCerrar.setOnMouseClicked(ev -> {
+					stage.hide();
+				});	
+
+				
+				
 				Label instruccionesLabel = new Label(
 						"Algoritmo Base 10  (1 Dígito Verificador)\nProcedimiento para calcular el Dígito Verificador");
-
 				instruccionesLabel.setWrapText(true);
-				instruccionesLabel.setTextAlignment(TextAlignment.JUSTIFY);
+				instruccionesLabel.setTextAlignment(TextAlignment.CENTER);
 				instruccionesLabel
 						.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-font-weight: bold");
 				instruccionesLabel.setTextFill(Color.web("#828488"));
+				instruccionesLabel.setMinHeight(40);
 				StackPane p = new StackPane();
-				p.setPrefSize(1000, 160);
 				p.setPadding(new Insets(20, 0, 20, 0));
-				p.setStyle("-fx-background-color: #d9d9d9");
+				p.setStyle("-fx-background-color: white");
 				p.getChildren().add(instruccionesLabel);
-				StackPane.setAlignment(instruccionesLabel, Pos.CENTER_LEFT);
+				
+	
 
 				stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
 				stage.setTitle("Referencias - Instrucciones");
@@ -370,11 +398,34 @@ public class OpcionReferencias extends Feature {
 
 						+ "\n\n7 - 4 = 3" + "\nDígito Verificador: 3"
 
-						+ "\n\n5.	A la referencia se le agregara el dígito verificador y esa será la línea de captura que recibirá el cajero en ventanilla."
+						+ "\n\n5.	A la referencia se le agregará el dígito verificador y esa será la línea de captura que recibirá el cajero en ventanilla."
 
 						+ "\n\nReferencia Completa: 3142233");
 				textArea.setEditable(false);
 				textArea.setWrapText(true);
+				textArea.setStyle("-fx-background-color:white;-fx-font-family: FranklinGothicLT;-fx-font-size: 14px;-fx-fill:#828488;-fx-focus-color: transparent; -fx-text-box-border: transparent;-fx-box-border: none;");
+				textArea.setPrefWidth(790);
+				textArea.setMinWidth(790);
+				
+				
+			
+				
+				
+				
+				
+				TabPane tabPane = new TabPane();
+				Tab tabInstrucciones = new Tab("    Instrucciones    ");
+				tabInstrucciones.setClosable(false);
+				StackPane sp = new StackPane();
+				sp.setPrefSize(800, 600);
+				sp.getChildren().add(textArea);
+				sp.setPadding(new Insets(0,30,0,30));
+				sp.setStyle("-fx-background-color:white;");
+				tabInstrucciones.setContent(sp);
+				
+				tabPane.getTabs().addAll(tabInstrucciones);
+				
+				
 
 				VBox vbox = new VBox();
 				textArea.prefHeightProperty().bind(vbox.prefHeightProperty().add(-60));
@@ -382,9 +433,10 @@ public class OpcionReferencias extends Feature {
 				VBox.setVgrow(vbox, Priority.ALWAYS);
 				vbox.getChildren().add(canvas);
 				vbox.getChildren().add(p);
-				vbox.getChildren().add(textArea);
-
-				stage.setScene(new Scene(vbox, 600, 600));
+				vbox.getChildren().add(tabPane);
+				Scene scene = new Scene(vbox,820,600);
+				scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+				stage.setScene(scene);
 				stage.setResizable(false);
 				stage.show();
 
@@ -398,14 +450,14 @@ public class OpcionReferencias extends Feature {
 
 		t = new ReferenciaTable();
 		hashCodeGuardado = t.getItems().hashCode();
-		t.getStyleClass().add("tabla-referencias");
+		//t.getStyleClass().add("tabla-referencias");
 
-		t.setMaxSize(650, 400);
+		t.setMaxSize(800, 400);
 
 		((BorderPane) mainPane).setCenter(t);
 		BorderPane.setAlignment(t, Pos.CENTER_RIGHT);
 
-		BorderPane.setMargin(t, new Insets(0, 30, 0, 0));
+		BorderPane.setMargin(t, new Insets(40, 25, 50, 0));
 		// BorderPane.setMargin(t, new Insets(25, 0, 0, 0));
 
 		bImportarArchivo.setOnAction(new EventHandler<ActionEvent>() {

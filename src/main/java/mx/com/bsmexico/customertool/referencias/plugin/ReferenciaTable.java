@@ -20,6 +20,7 @@ public class ReferenciaTable extends EditableLayoutTable<Referencia>
 
 	public ReferenciaTable() throws IllegalArgumentException, InstantiationError {
 		super(Referencia.class);
+		setIndexColumn();
 
 	}
 	
@@ -66,7 +67,7 @@ public class ReferenciaTable extends EditableLayoutTable<Referencia>
 	@Override
 	protected String[] getFieldOrder() {
 		return new String[] { Referencia.FIELD_REFERENCIA, Referencia.FIELD_REFERENCIA_COMPLETA,
-				Referencia.FIELD_DIGITO_VERIFICADOR };
+				Referencia.FIELD_DIGITO_VERIFICADOR, Referencia.FIELD_COMENTARIOS };
 	}
 
 	@SuppressWarnings("unchecked")
@@ -114,7 +115,7 @@ public class ReferenciaTable extends EditableLayoutTable<Referencia>
 			TableColumn ct = null;
 			for (String id : ids) {
 				ct = columnFactory.<String>getColumn(id, 100);
-				ct.prefWidthProperty().bind(widthProperty().multiply(0.3333333333333333));
+				ct.prefWidthProperty().bind(widthProperty().multiply(0.24));
 				if(id.equals(Referencia.FIELD_REFERENCIA_COMPLETA) || id.equals(Referencia.FIELD_DIGITO_VERIFICADOR)){
 					ct.setStyle("-fx-alignment: CENTER;");
 				}

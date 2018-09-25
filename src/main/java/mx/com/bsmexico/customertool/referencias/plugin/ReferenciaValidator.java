@@ -22,6 +22,9 @@ public class ReferenciaValidator extends LayoutModelValidator<Referencia> {
 			case Referencia.FIELD_REFERENCIA:
 				isValid = referencia().test(model);
 				break;
+			case Referencia.FIELD_COMENTARIOS:
+				isValid = comentarios().test(model);
+				break;
 			default:
 				break;
 			}
@@ -51,6 +54,12 @@ public class ReferenciaValidator extends LayoutModelValidator<Referencia> {
 	public Predicate<Referencia> referencia() {
 		return v -> {
 			return (v.getReferencia() != null && v.getReferencia().length()==6 && NumberUtils.isDigits(v.getReferencia()));
+		};
+	}
+	
+	public Predicate<Referencia> comentarios() {
+		return v -> {
+			return true;
 		};
 	}
 
