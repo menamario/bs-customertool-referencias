@@ -69,7 +69,7 @@ public class ReferenciaValidator extends LayoutModelValidator<Referencia> {
 		if (StringUtils.isNotBlank(fieldName)) {
 			switch (fieldName) {
 			case Referencia.FIELD_REFERENCIA:
-				desc = "Dato Obligatorio\nValor Numérico de 6 posiciones";
+				desc = "Dato obligatorio\nValor numérico de 6 posiciones";
 				break;
 			case Referencia.FIELD_REFERENCIA_COMPLETA:
 				desc = "En este campo se mostrará la referencia completa incluyendo el dígito verificador";

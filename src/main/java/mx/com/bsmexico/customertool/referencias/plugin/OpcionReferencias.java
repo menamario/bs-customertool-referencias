@@ -88,7 +88,7 @@ public class OpcionReferencias extends Feature {
 				"TEST");
 		NavRoute route = null;
 		try {
-			route = navRuoteBuilder.addNode("Generacion de Referencias", "Generacion de Referencias", 0, false,
+			route = navRuoteBuilder.addNode("Generación de referencias", "Generación de referencias", 0, false,
 					getImageInput("/img/referencias.png")).build();
 
 		} catch (IllegalStateException e) {
@@ -158,7 +158,7 @@ public class OpcionReferencias extends Feature {
 		bInstrucciones.setContentDisplay(ContentDisplay.TOP);
 
 		bImportarArchivo.setGraphic(importarArchivo);
-		bImportarArchivo.setText("Importar Archivo");
+		bImportarArchivo.setText("Importar archivo");
 		bImportarArchivo.setTextFill(Color.WHITE);
 		bImportarArchivo.setStyle(
 				"-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 13px;-fx-background-color: transparent;");
@@ -261,7 +261,7 @@ public class OpcionReferencias extends Feature {
 		HBox headerBox2 = new HBox();
 		headerBox1.setSpacing(40);
 		headerBox1.getChildren().add(bAtras);
-		Label l = new Label("    Generacion de Referencias    ");
+		Label l = new Label("    Generación de referencias    ");
 		l.setTextFill(Color.WHITE);
 		l.setStyle(
 				"-fx-background-color: #f0a21d;-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-border-radius: 0 0 5 5; -fx-background-radius: 0 0 4 4; ");
@@ -283,6 +283,8 @@ public class OpcionReferencias extends Feature {
 		ObservableList<String> options = FXCollections.observableArrayList("Algoritmo 10");
 		final ComboBox comboBox = new ComboBox(options);
 		comboBox.getSelectionModel().selectFirst();
+		comboBox.setPrefHeight(28);
+		comboBox.setMinWidth(250);
 		hb.getChildren().add(comboBox);
 
 		Button bCalcular = new Button("Calcular");
@@ -403,7 +405,7 @@ public class OpcionReferencias extends Feature {
 						+ "\n\nReferencia Completa: 3142233");
 				textArea.setEditable(false);
 				textArea.setWrapText(true);
-				textArea.setStyle("-fx-background-color:white;-fx-font-family: FranklinGothicLT;-fx-font-size: 14px;-fx-fill:#828488;-fx-focus-color: transparent; -fx-text-box-border: transparent;-fx-box-border: none;");
+				textArea.setStyle("-fx-background-color:white;-fx-font-family: FranklinGothicLT;-fx-font-size: 14px;-fx-fill:black;-fx-focus-color: transparent; -fx-text-box-border: transparent;-fx-box-border: none;");
 				textArea.setPrefWidth(790);
 				textArea.setMinWidth(790);
 				
