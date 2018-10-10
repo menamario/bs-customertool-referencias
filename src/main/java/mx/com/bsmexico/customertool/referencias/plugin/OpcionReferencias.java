@@ -1,9 +1,13 @@
 package mx.com.bsmexico.customertool.referencias.plugin;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.nio.file.Paths;
 
 import javafx.application.Platform;
@@ -37,6 +41,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -58,6 +63,7 @@ public class OpcionReferencias extends Feature {
 	ImageView check = new ImageView();
 	double xOffset=0;
 	double yOffset=0;
+	Stage stage = null;
 
 	public String getNombreMenu() {
 		// TODO Auto-generated method stub
@@ -89,12 +95,9 @@ public class OpcionReferencias extends Feature {
 		NavRoute route = null;
 		try {
 			route = navRuoteBuilder.addNode("Generación de referencias", "Generación de referencias", 0, false,
-					getImageInput("/img/referencias.png")).build();
+					getClass().getResourceAsStream("/img/referencias.svg")).build();
 
 		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -104,7 +107,7 @@ public class OpcionReferencias extends Feature {
 	@Override
 	public void launch() {
 		getMenuNavigator().hide();
-		getDesktop().updatePleca("#f0a21d", null);
+		getDesktop().updatePleca("black", null);
 
 		Pane mainPane = new BorderPane();
 
@@ -114,6 +117,10 @@ public class OpcionReferencias extends Feature {
 		ImageView instrucciones = null;
 		ImageView atras = null;
 		ImageView cerrar = null;
+
+		WebView importarArchivoWv = null;
+		WebView instruccionesWv = null;
+		WebView regresarWv = null;
 
 		try {
 			error = new ImageView(new Image(this.getImageInput("/img/error.png")));
@@ -128,12 +135,47 @@ public class OpcionReferencias extends Feature {
 			cerrar = new ImageView(new Image(this.getImageInput("/img/close.png")));
 			cerrar.setPreserveRatio(true);
 			cerrar.setFitWidth(25);
-			importarArchivo = new ImageView(new Image(this.getImageInput("/img/importarReferencias.png")));
+			importarArchivo = new ImageView(new Image(this.getImageInput("/img/importarArchivo.png")));
 			importarArchivo.setPreserveRatio(true);
 			importarArchivo.setFitWidth(70);
-			instrucciones = new ImageView(new Image(this.getImageInput("/img/instrucciones.png")));
+			importarArchivo.setSmooth(true);
+			instrucciones = new ImageView(new Image(this.getImageInput("/img/instrucciones.jpg")));
 			instrucciones.setPreserveRatio(true);
 			instrucciones.setFitWidth(70);
+			
+			
+			String htmlImportarArchivo = null;
+			String htmlInstrucciones = null;
+			String htmlRegresar = null;
+			
+			try {
+				htmlImportarArchivo = this.getHtml(65, 45, "#006dff", readFile(getClass().getResourceAsStream("/img/importarArchivo.svg"), Charset.defaultCharset()));
+				htmlInstrucciones = this.getHtml(65, 45, "#006dff", readFile(getClass().getResourceAsStream("/img/instrucciones.svg"), Charset.defaultCharset()));
+				htmlRegresar = this.getHtml(40, readFile(getClass().getResourceAsStream("/img/atras.svg"), Charset.defaultCharset()));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			importarArchivoWv = new WebView();
+			importarArchivoWv.getEngine().loadContent(htmlImportarArchivo);
+			importarArchivoWv.getStyleClass().add("browser");
+			importarArchivoWv.setMaxSize(85, 85);
+			importarArchivoWv.setMouseTransparent(true);
+			
+			
+			instruccionesWv = new WebView();
+			instruccionesWv.getEngine().loadContent(htmlInstrucciones);
+			instruccionesWv.getStyleClass().add("browser");
+			instruccionesWv.setMaxSize(85, 85);
+			instruccionesWv.setMouseTransparent(true);
+			
+			regresarWv = new WebView();
+			regresarWv.getEngine().loadContent(htmlRegresar);
+			regresarWv.getStyleClass().add("browser");
+			regresarWv.setMaxSize(60, 60);
+			regresarWv.setMouseTransparent(true);
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -142,27 +184,35 @@ public class OpcionReferencias extends Feature {
 		Button bAtras = new Button();
 		Button bInstrucciones = new Button();
 		Button bImportarArchivo = new Button();
+		
 
 		bCerrar.setGraphic(cerrar);
 		bCerrar.setStyle("-fx-background-color: transparent;");
 		StackPane.setAlignment(bCerrar, Pos.TOP_RIGHT);
 
-		bAtras.setGraphic(atras);
-		bAtras.setStyle("-fx-background-color: transparent;");
+		bAtras.setGraphic(regresarWv);
+		bAtras.setStyle("-fx-background-color: transparent;-fx-padding:0;");
 		bAtras.setTooltip(new Tooltip("Regresar"));
-		bInstrucciones.setGraphic(instrucciones);
+		bAtras.setMaxSize(80,80);
+		bAtras.setGraphicTextGap(0);
+		bInstrucciones.setGraphic(instruccionesWv);
 		bInstrucciones.setText("Instrucciones");
-		bInstrucciones.setTextFill(Color.WHITE);
+		bInstrucciones.setTextFill(Color.BLACK);
 		bInstrucciones.setStyle(
-				"-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 13px;-fx-background-color: transparent;");
+				"-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 13px;-fx-background-color: transparent;-fx-padding:0");
 		bInstrucciones.setContentDisplay(ContentDisplay.TOP);
+		bInstrucciones.setMaxSize(150,105);
+		bInstrucciones.setGraphicTextGap(0);
 
-		bImportarArchivo.setGraphic(importarArchivo);
+		bImportarArchivo.setGraphic(importarArchivoWv);
 		bImportarArchivo.setText("Importar archivo");
-		bImportarArchivo.setTextFill(Color.WHITE);
+		bImportarArchivo.setTextFill(Color.BLACK);
 		bImportarArchivo.setStyle(
-				"-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 13px;-fx-background-color: transparent;");
+				"-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 13px;-fx-background-color: transparent; -fx-padding:0");
 		bImportarArchivo.setContentDisplay(ContentDisplay.TOP);
+		bImportarArchivo.setMaxSize(150,105);
+		bImportarArchivo.setGraphicTextGap(0);
+
 
 		bAtras.setOnMouseClicked(evt -> {
 			if (t.getItems().hashCode() == hashCodeGuardado) {
@@ -173,7 +223,7 @@ public class OpcionReferencias extends Feature {
 
 				StackPane canvas = new StackPane();
 				canvas.setPadding(new Insets(5));
-				canvas.setStyle("-fx-background-color: #e90e5c;");
+				canvas.setStyle("-fx-background-color:  #006dff;");
 				canvas.setPrefSize(512, 54);
 
 				canvas.getChildren().add(bCerrar);
@@ -264,7 +314,7 @@ public class OpcionReferencias extends Feature {
 		Label l = new Label("    Generación de referencias    ");
 		l.setTextFill(Color.WHITE);
 		l.setStyle(
-				"-fx-background-color: #f0a21d;-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-border-radius: 0 0 5 5; -fx-background-radius: 0 0 4 4; ");
+				"-fx-background-color: black;-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-border-radius: 0 0 5 5; -fx-background-radius: 0 0 4 4; ");
 		headerBox1.getChildren().add(l);
 		headerBox2.getChildren().add(bInstrucciones);
 		headerBox2.getChildren().add(bImportarArchivo);
@@ -285,11 +335,12 @@ public class OpcionReferencias extends Feature {
 		comboBox.getSelectionModel().selectFirst();
 		comboBox.setPrefHeight(28);
 		comboBox.setMinWidth(250);
+		comboBox.setStyle("-fx-text-fill: #006dff;-fx-font-weight:bold;");
 		hb.getChildren().add(comboBox);
 
 		Button bCalcular = new Button("Calcular");
 		bCalcular.setStyle(
-				"-fx-background-color: #accaf3;  -fx-font-family: FranklinGothicLT;-fx-font-size: 15px;-fx-font-weight:bold");
+				"-fx-background-color: white;  -fx-font-family: FranklinGothicLT;-fx-font-size: 15px;-fx-font-weight:bold; -fx-border-width:2px; -fx-border-color: #66a7ff;");
 		bCalcular.setPrefWidth(140);
 		bCalcular.setTextFill(Color.BLACK);
 
@@ -299,7 +350,7 @@ public class OpcionReferencias extends Feature {
 
 		Button bGuardar = new Button("Guardar");
 		bGuardar.setStyle(
-				"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT;-fx-font-size: 15px;-fx-font-weight:bold");
+				"-fx-background-color: #4c4c4c;  -fx-font-family: FranklinGothicLT;-fx-font-size: 15px;-fx-font-weight:bold;-fx-border-width:2px; -fx-border-color: #4c4c4c;");
 		bGuardar.setPrefWidth(140);
 		bGuardar.setTextFill(Color.WHITE);
 		hb.getChildren().add(bGuardar);
@@ -325,122 +376,143 @@ public class OpcionReferencias extends Feature {
 		bInstrucciones.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 
-				Stage stage = new Stage(StageStyle.UNDECORATED);
+				if(stage==null){
+					stage = new Stage(StageStyle.UNDECORATED);
 
-				StackPane canvas = new StackPane();
-				canvas.setPadding(new Insets(10));
-				canvas.setStyle("-fx-background-color: #239d45;");
-				canvas.setPrefSize(800, 60);
-				canvas.setMinHeight(54);
-				canvas.setOnMousePressed(e -> {
-					xOffset = e.getSceneX();
-					yOffset = e.getSceneY();
+					StackPane canvas = new StackPane();
+					canvas.setPadding(new Insets(10));
+					canvas.setStyle("-fx-background-color: #66a7ff;");
+					canvas.setPrefSize(800, 60);
+					canvas.setMinHeight(54);
+					canvas.setOnMousePressed(e -> {
+						xOffset = e.getSceneX();
+						yOffset = e.getSceneY();
 
-		        });
+			        });
+					
+					canvas.setOnMouseDragged(e -> {
+						stage.setX(e.getScreenX() - xOffset);
+						stage.setY(e.getScreenY() - yOffset - 20);
+
+			        });
+					
+					canvas.getChildren().add(bCerrar);
+					StackPane.setAlignment(bCerrar, Pos.TOP_RIGHT);
+
+					bCerrar.setOnMouseClicked(ev -> {
+						stage.hide();
+					});	
+
+					
+					
+					Label instruccionesLabel = new Label(
+							"Algoritmo Base 10  (1 Dígito Verificador)\nProcedimiento para calcular el Dígito Verificador");
+					instruccionesLabel.setWrapText(true);
+					instruccionesLabel.setTextAlignment(TextAlignment.CENTER);
+					instruccionesLabel
+							.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-font-weight: bold");
+					instruccionesLabel.setTextFill(Color.web("#828488"));
+					instruccionesLabel.setMinHeight(40);
+					StackPane p = new StackPane();
+					p.setPadding(new Insets(20, 0, 20, 0));
+					p.setStyle("-fx-background-color: white");
+					p.getChildren().add(instruccionesLabel);
+					
+		
+
+					stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
+					stage.setTitle("Referencias - Instrucciones");
+
+					TextArea textArea = new TextArea();
+					textArea.setText("\nDATOS NECESARIOS PARA EL CÁLCULO:"
+
+							+ "\n\nReferencia de 1 a 6 Dígitos más 1 dígito verificador."
+
+							+ "\nEjemplo:" + "\nSi la Referencia es igual a: 3142233"
+
+							+ "\n\n1. Si la Referencia tiene una longitud mayor a 6 posiciones, se toman los primeros 6 dígitos de  la derecha sin contar el dígito verificador."
+
+							+ "\n\n314223"
+
+							+ "\n\n2. De derecha a izquierda se van multiplicando cada uno de los dígitos por los números 2, 3, 4, 5.. siempre iniciando la secuencia con el número 2 aun cuando el número a multiplicar sea 0 deberá tomarse en cuenta."
+
+							+ "\n\n3  1  4  2  2  3" + "\n*  *  *  *  *  *" + "\n7  6  5  4  3  2"
+
+							+ "\n\n21  6 20  8  6  6"
+
+							+ "\n\n3. Se suman todos los resultados de las multiplicaciones del punto 1."
+
+							+ "\n\n21 + 6 + 20 + 8 + 6 + 6 = 67"
+
+							+ "\n\n4. El resultado de la suma indicada en el punto 2, se divide entre 7."
+
+							+ "\n\n        __9___" + "\n 7     | 67   " + "\n         4"
+
+							+ "\n\n5. El residuo de la división del punto 3 se le resta a 7 y el resultado será el dígito verificador."
+
+							+ "\n\n7 - 4 = 3" + "\nDígito Verificador: 3"
+
+							+ "\n\n6. A la referencia se le agregará el dígito verificador y esa será la línea de captura que recibirá el cajero en ventanilla."
+
+							+ "\n\nReferencia Completa: 3142233");
+					textArea.setEditable(false);
+					textArea.setWrapText(true);
+					textArea.setStyle("-fx-background-color:white;-fx-font-family: FranklinGothicLT;-fx-font-size: 14px;-fx-fill:black;-fx-focus-color: transparent; -fx-text-box-border: transparent;-fx-box-border: none;");
+					textArea.setPrefWidth(790);
+					textArea.setMinWidth(790);
+							
+					TabPane tabPane = new TabPane();
+					Tab tabInstrucciones = new Tab("    Instrucciones    ");
+					tabInstrucciones.setClosable(false);
+					StackPane sp = new StackPane();
+					sp.setPrefSize(800, 600);
+					
+					
+					
+					//sp.getChildren().add(textArea);
+					
+					WebView wv = new WebView();
+					try {
+						String html = readFile(getClass().getResourceAsStream("/html/Referencias.html"), Charset.defaultCharset());
+						String rutaImg = getClass().getResource("/html/img").toString();
+						html = html.replaceAll("<ruta_img>", rutaImg);
+						wv.getEngine().loadContent(html);
+						wv.setPrefSize(800, 600);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					
+					sp.getChildren().add(wv);
+					sp.setPadding(new Insets(0,0,0,30));
+					sp.setStyle("-fx-background-color:white;-fx-border-color:transparent; -fx-border-width:5;");
+					tabInstrucciones.setContent(sp);
+					
+					tabPane.getTabs().addAll(tabInstrucciones);
+					
+					
+
+					VBox vbox = new VBox();
+					textArea.prefHeightProperty().bind(vbox.prefHeightProperty().add(-60));
+					wv.maxHeightProperty().bind(vbox.prefHeightProperty().add(-60));
+					vbox.setPrefSize(600, 600);
+					VBox.setVgrow(vbox, Priority.ALWAYS);
+					vbox.getChildren().add(canvas);
+					vbox.getChildren().add(p);
+					vbox.getChildren().add(tabPane);
+					vbox.setStyle("-fx-background-color:white;-fx-border-color:lightgray; -fx-border-width:2px;");
+					Scene scene = new Scene(vbox,820,600);
+					scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+					stage.setScene(scene);
+					stage.setResizable(false);
+					stage.show();
+					
+				}else{
+					stage.show();
+					stage.toFront();
+				}
 				
-				canvas.setOnMouseDragged(e -> {
-					stage.setX(e.getScreenX() - xOffset);
-					stage.setY(e.getScreenY() - yOffset - 20);
-
-		        });
-				
-				canvas.getChildren().add(bCerrar);
-				StackPane.setAlignment(bCerrar, Pos.TOP_RIGHT);
-
-				bCerrar.setOnMouseClicked(ev -> {
-					stage.hide();
-				});	
-
-				
-				
-				Label instruccionesLabel = new Label(
-						"Algoritmo Base 10  (1 Dígito Verificador)\nProcedimiento para calcular el Dígito Verificador");
-				instruccionesLabel.setWrapText(true);
-				instruccionesLabel.setTextAlignment(TextAlignment.CENTER);
-				instruccionesLabel
-						.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-font-weight: bold");
-				instruccionesLabel.setTextFill(Color.web("#828488"));
-				instruccionesLabel.setMinHeight(40);
-				StackPane p = new StackPane();
-				p.setPadding(new Insets(20, 0, 20, 0));
-				p.setStyle("-fx-background-color: white");
-				p.getChildren().add(instruccionesLabel);
-				
-	
-
-				stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
-				stage.setTitle("Referencias - Instrucciones");
-
-				TextArea textArea = new TextArea();
-				textArea.setText("\nDATOS NECESARIOS PARA EL CÁLCULO:"
-
-						+ "\n\nReferencia 	de 1 a 6 Dígitos mas 1 digito verificador."
-
-						+ "\nEjemplo:" + "\nSi la Referencia es igual a:     3142233"
-
-						+ "\n\n1. Si la Referencia tiene una longitud mayor a 6 posiciones, se toman los primeros 6 dígitos de  la derecha sin contar el digito verificador."
-
-						+ "\n\n314223"
-
-						+ "\n\n2.	De derecha a izquierda se van multiplicando cada uno de los dígitos por los números 2, 3, 4, 5.. siempre iniciando la secuencia con el número 2 aun cuando el número a multiplicar sea 0 deberá tomarse en cuenta."
-
-						+ "\n\n3  1  4  2  2  3" + "\n*  *  *  *  *  *" + "\n7  6  5  4  3  2"
-
-						+ "\n\n21  6 20  8  6  6"
-
-						+ "\n\n2. Se suman todos los resultados de las multiplicaciones del punto 1."
-
-						+ "\n\n21 + 6 + 20 + 8 + 6 + 6 = 67"
-
-						+ "\n\n3.	El resultado de la suma indicada en el punto 2, se divide entre 7."
-
-						+ "\n\n        __9___" + "\n 7     | 67   " + "\n         4"
-
-						+ "\n\n4.	El residuo de la división del punto 3 se le resta a 7 y el resultado será el dígito verificador."
-
-						+ "\n\n7 - 4 = 3" + "\nDígito Verificador: 3"
-
-						+ "\n\n5.	A la referencia se le agregará el dígito verificador y esa será la línea de captura que recibirá el cajero en ventanilla."
-
-						+ "\n\nReferencia Completa: 3142233");
-				textArea.setEditable(false);
-				textArea.setWrapText(true);
-				textArea.setStyle("-fx-background-color:white;-fx-font-family: FranklinGothicLT;-fx-font-size: 14px;-fx-fill:black;-fx-focus-color: transparent; -fx-text-box-border: transparent;-fx-box-border: none;");
-				textArea.setPrefWidth(790);
-				textArea.setMinWidth(790);
-				
-				
-			
-				
-				
-				
-				
-				TabPane tabPane = new TabPane();
-				Tab tabInstrucciones = new Tab("    Instrucciones    ");
-				tabInstrucciones.setClosable(false);
-				StackPane sp = new StackPane();
-				sp.setPrefSize(800, 600);
-				sp.getChildren().add(textArea);
-				sp.setPadding(new Insets(0,30,0,30));
-				sp.setStyle("-fx-background-color:white;");
-				tabInstrucciones.setContent(sp);
-				
-				tabPane.getTabs().addAll(tabInstrucciones);
-				
-				
-
-				VBox vbox = new VBox();
-				textArea.prefHeightProperty().bind(vbox.prefHeightProperty().add(-60));
-				vbox.setPrefSize(600, 600);
-				VBox.setVgrow(vbox, Priority.ALWAYS);
-				vbox.getChildren().add(canvas);
-				vbox.getChildren().add(p);
-				vbox.getChildren().add(tabPane);
-				Scene scene = new Scene(vbox,820,600);
-				scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
-				stage.setScene(scene);
-				stage.setResizable(false);
-				stage.show();
 
 			}
 		});
@@ -478,7 +550,7 @@ public class OpcionReferencias extends Feature {
 
 						Pane canvas = new Pane();
 						canvas.setPadding(new Insets(5));
-						canvas.setStyle("-fx-background-color:  #e90e5c;");
+						canvas.setStyle("-fx-background-color: #ff5120;");
 						canvas.setPrefSize(512, 54);
 
 						canvas.getChildren().add(bCerrar);
@@ -583,7 +655,7 @@ public class OpcionReferencias extends Feature {
 
 				StackPane canvas = new StackPane();
 				canvas.setPadding(new Insets(5));
-				canvas.setStyle("-fx-background-color: #e90e5c;");
+				canvas.setStyle("-fx-background-color: #ff5120;");
 				canvas.setPrefSize(512, 54);
 				
 				canvas.getChildren().add(bCerrar);
@@ -663,7 +735,7 @@ public class OpcionReferencias extends Feature {
 
 						StackPane canvas = new StackPane();
 						canvas.setPadding(new Insets(5));
-						canvas.setStyle("-fx-background-color:  #a9d42c;");
+						canvas.setStyle("-fx-background-color:  #006dff;");
 						canvas.setPrefSize(512, 54);
 
 						canvas.getChildren().add(bCerrar);
@@ -734,7 +806,40 @@ public class OpcionReferencias extends Feature {
 	private void salir() {
 		getMenuNavigator().show();
 		getDesktop().setWorkArea(null);
-		getDesktop().updatePleca("black", null);
+		getDesktop().updatePleca("white", null);
+	}
+	
+	static String readFile(InputStream in, Charset encoding) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+		StringBuffer response = new StringBuffer();
+		for (String line; (line = reader.readLine()) != null; response.append(line))
+			;
+		return response.toString();
+	}
+
+	private String getHtml(int circle, int image, String circleColor, String svg) {
+		StringBuffer sb = new StringBuffer();
+		int radio = circle / 2;
+		sb.append(String.format(
+				"<html><head></head><body><svg  width='%d' height='%d'><circle cx='%d' cy='%d' r='%d' fill='%s'></circle><svg>",
+				circle, circle, radio, radio, radio, circleColor));
+		int desplazamientoImagen = (circle - image) / 2;
+		sb.append(String.format("<svg x='%d' y='%d' width='%d' height='%d' style='fill:white'>", desplazamientoImagen,
+				desplazamientoImagen, image, image));
+		sb.append(svg);
+		sb.append("</svg></body></html>");
+		return sb.toString();
+	}
+	
+	private String getHtml(int image, String svg) {
+		StringBuffer sb = new StringBuffer();
+		sb.append(String.format(
+				"<html><head></head><body>"));
+		
+		sb.append(String.format("<svg width='%d' height='%d'>", image, image));
+		sb.append(svg);
+		sb.append("</svg></body></html>");
+		return sb.toString();
 	}
 
 	@Override

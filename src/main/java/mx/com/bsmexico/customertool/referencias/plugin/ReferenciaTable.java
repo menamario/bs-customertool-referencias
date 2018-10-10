@@ -116,6 +116,7 @@ public class ReferenciaTable extends EditableLayoutTable<Referencia>
 			for (String id : ids) {
 				ct = columnFactory.<String>getColumn(id, 100);
 				ct.prefWidthProperty().bind(widthProperty().multiply(0.24));
+				ct.impl_setReorderable(false);
 				if(id.equals(Referencia.FIELD_REFERENCIA_COMPLETA) || id.equals(Referencia.FIELD_DIGITO_VERIFICADOR)){
 					ct.setStyle("-fx-alignment: CENTER;");
 				}
