@@ -472,6 +472,7 @@ public class OpcionReferencias extends Feature {
 					//sp.getChildren().add(textArea);
 					
 					WebView wv = new WebView();
+					wv.setContextMenuEnabled(false);
 					try {
 						String html = readFile(getClass().getResourceAsStream("/html/Referencias.html"), Charset.defaultCharset());
 						String rutaImg = getClass().getResource("/html/img").toString();
