@@ -75,7 +75,10 @@ public class ReferenciaValidator extends LayoutModelValidator<Referencia> {
 				desc = "En este campo se mostrará la referencia completa incluyendo el dígito verificador";
 				break;
 			case Referencia.FIELD_DIGITO_VERIFICADOR:
-				desc = "Digito Verificador calculado segun el algoritmo elegido";
+				desc = "Dígito verificador calculado según el algoritmo elegido";
+				break;
+			case Referencia.FIELD_COMENTARIOS:
+				desc = "Información adicional de la referencia";
 				break;
 			default:
 				break;

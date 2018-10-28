@@ -23,12 +23,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -40,6 +38,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
@@ -108,6 +107,8 @@ public class OpcionReferencias extends Feature {
 	public void launch() {
 		getMenuNavigator().hide();
 		getDesktop().updatePleca("black", null);
+		
+		Font.loadFont(getClass().getResourceAsStream("/font/FranklinGothic.ttf"), 14);
 
 		Pane mainPane = new BorderPane();
 
@@ -122,64 +123,37 @@ public class OpcionReferencias extends Feature {
 		WebView instruccionesWv = null;
 		WebView regresarWv = null;
 
+		String htmlImportarArchivo = null;
+		String htmlInstrucciones = null;
+		String htmlRegresar = null;
+		
 		try {
-			error = new ImageView(new Image(this.getImageInput("/img/error.png")));
-			error.setPreserveRatio(true);
-			error.setFitWidth(66);
-			check = new ImageView(new Image(this.getImageInput("/img/check.png")));
-			check.setPreserveRatio(true);
-			check.setFitWidth(66);
-			atras = new ImageView(new Image(this.getImageInput("/img/atras.png")));
-			atras.setPreserveRatio(true);
-			atras.setFitWidth(40);
-			cerrar = new ImageView(new Image(this.getImageInput("/img/close.png")));
-			cerrar.setPreserveRatio(true);
-			cerrar.setFitWidth(25);
-			importarArchivo = new ImageView(new Image(this.getImageInput("/img/importarArchivo.png")));
-			importarArchivo.setPreserveRatio(true);
-			importarArchivo.setFitWidth(70);
-			importarArchivo.setSmooth(true);
-			instrucciones = new ImageView(new Image(this.getImageInput("/img/instrucciones.jpg")));
-			instrucciones.setPreserveRatio(true);
-			instrucciones.setFitWidth(70);
-			
-			
-			String htmlImportarArchivo = null;
-			String htmlInstrucciones = null;
-			String htmlRegresar = null;
-			
-			try {
-				htmlImportarArchivo = this.getHtml(65, 45, "#006dff", readFile(getClass().getResourceAsStream("/img/importarArchivo.svg"), Charset.defaultCharset()));
-				htmlInstrucciones = this.getHtml(65, 45, "#006dff", readFile(getClass().getResourceAsStream("/img/instrucciones.svg"), Charset.defaultCharset()));
-				htmlRegresar = this.getHtml(40, readFile(getClass().getResourceAsStream("/img/atras.svg"), Charset.defaultCharset()));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			importarArchivoWv = new WebView();
-			importarArchivoWv.getEngine().loadContent(htmlImportarArchivo);
-			importarArchivoWv.getStyleClass().add("browser");
-			importarArchivoWv.setMaxSize(85, 85);
-			importarArchivoWv.setMouseTransparent(true);
-			
-			
-			instruccionesWv = new WebView();
-			instruccionesWv.getEngine().loadContent(htmlInstrucciones);
-			instruccionesWv.getStyleClass().add("browser");
-			instruccionesWv.setMaxSize(85, 85);
-			instruccionesWv.setMouseTransparent(true);
-			
-			regresarWv = new WebView();
-			regresarWv.getEngine().loadContent(htmlRegresar);
-			regresarWv.getStyleClass().add("browser");
-			regresarWv.setMaxSize(60, 60);
-			regresarWv.setMouseTransparent(true);
-			
-		} catch (FileNotFoundException e) {
+			htmlImportarArchivo = this.getHtml(65, readFile(getClass().getResourceAsStream("/img/importarArchivo.svg"), Charset.defaultCharset()));
+			htmlInstrucciones = this.getHtml(65, readFile(getClass().getResourceAsStream("/img/instrucciones.svg"), Charset.defaultCharset()));
+			htmlRegresar = this.getHtml(40, readFile(getClass().getResourceAsStream("/img/atras.svg"), Charset.defaultCharset()));
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		importarArchivoWv = new WebView();
+		importarArchivoWv.getEngine().loadContent(htmlImportarArchivo);
+		importarArchivoWv.getStyleClass().add("browser");
+		importarArchivoWv.setMaxSize(85, 85);
+		importarArchivoWv.setMouseTransparent(true);
+		
+		
+		instruccionesWv = new WebView();
+		instruccionesWv.getEngine().loadContent(htmlInstrucciones);
+		instruccionesWv.getStyleClass().add("browser");
+		instruccionesWv.setMaxSize(85, 85);
+		instruccionesWv.setMouseTransparent(true);
+		
+		regresarWv = new WebView();
+		regresarWv.getEngine().loadContent(htmlRegresar);
+		regresarWv.getStyleClass().add("browser");
+		regresarWv.setMaxSize(60, 60);
+		regresarWv.setMouseTransparent(true);
 
 		Button bAtras = new Button();
 		Button bInstrucciones = new Button();
@@ -474,10 +448,12 @@ public class OpcionReferencias extends Feature {
 					WebView wv = new WebView();
 					wv.setContextMenuEnabled(false);
 					try {
+						System.out.println(Font.loadFont(getClass().getResourceAsStream("/font/FranklinGothic.ttf"), 14));
 						String html = readFile(getClass().getResourceAsStream("/html/Referencias.html"), Charset.defaultCharset());
 						String rutaImg = getClass().getResource("/html/img").toString();
 						html = html.replaceAll("<ruta_img>", rutaImg);
 						wv.getEngine().loadContent(html);
+						//wv.getEngine().setUserStyleSheetLocation("data:,td { font-family: FranklinGothicLT; font-size:13px;}");
 						wv.setPrefSize(800, 600);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
