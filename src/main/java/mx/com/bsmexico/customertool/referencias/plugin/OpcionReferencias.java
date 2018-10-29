@@ -60,8 +60,8 @@ public class OpcionReferencias extends Feature {
 	Button bCerrar = new Button();
 	ImageView error = new ImageView();
 	ImageView check = new ImageView();
-	double xOffset=0;
-	double yOffset=0;
+	double xOffset = 0;
+	double yOffset = 0;
 	Stage stage = null;
 
 	public String getNombreMenu() {
@@ -107,7 +107,7 @@ public class OpcionReferencias extends Feature {
 	public void launch() {
 		getMenuNavigator().hide();
 		getDesktop().updatePleca("black", null);
-		
+
 		Font.loadFont(getClass().getResourceAsStream("/font/FranklinGothic.ttf"), 14);
 
 		Pane mainPane = new BorderPane();
@@ -123,42 +123,63 @@ public class OpcionReferencias extends Feature {
 		WebView instruccionesWv = null;
 		WebView regresarWv = null;
 
-		String htmlImportarArchivo = null;
-		String htmlInstrucciones = null;
-		String htmlRegresar = null;
-		
 		try {
-			htmlImportarArchivo = this.getHtml(65, readFile(getClass().getResourceAsStream("/img/importarArchivo.svg"), Charset.defaultCharset()));
-			htmlInstrucciones = this.getHtml(65, readFile(getClass().getResourceAsStream("/img/instrucciones.svg"), Charset.defaultCharset()));
-			htmlRegresar = this.getHtml(40, readFile(getClass().getResourceAsStream("/img/atras.svg"), Charset.defaultCharset()));
-		} catch (IOException e) {
+			error = new ImageView(new Image(this.getImageInput("/img/error.png")));
+			error.setPreserveRatio(true);
+			error.setFitWidth(66);
+			check = new ImageView(new Image(this.getImageInput("/img/check.png")));
+			check.setPreserveRatio(true);
+			check.setFitWidth(66);
+			// atras = new ImageView(new
+			// Image(this.getImageInput("/img/atras.png")));
+			// atras.setPreserveRatio(true);
+			// atras.setFitWidth(40);
+			cerrar = new ImageView(new Image(this.getImageInput("/img/close.png")));
+			cerrar.setPreserveRatio(true);
+			cerrar.setFitWidth(25);
+
+			String htmlImportarArchivo = null;
+			String htmlInstrucciones = null;
+			String htmlRegresar = null;
+
+			try {
+				htmlImportarArchivo = this.getHtml(65, 45, "#006dff",
+						readFile(getClass().getResourceAsStream("/img/importarArchivo.svg"), Charset.defaultCharset()));
+				htmlInstrucciones = this.getHtml(65, 45, "#006dff",
+						readFile(getClass().getResourceAsStream("/img/instrucciones.svg"), Charset.defaultCharset()));
+				htmlRegresar = this.getHtml(40,
+						readFile(getClass().getResourceAsStream("/img/atras.svg"), Charset.defaultCharset()));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			importarArchivoWv = new WebView();
+			importarArchivoWv.getEngine().loadContent(htmlImportarArchivo);
+			importarArchivoWv.getStyleClass().add("browser");
+			importarArchivoWv.setMaxSize(85, 85);
+			importarArchivoWv.setMouseTransparent(true);
+
+			instruccionesWv = new WebView();
+			instruccionesWv.getEngine().loadContent(htmlInstrucciones);
+			instruccionesWv.getStyleClass().add("browser");
+			instruccionesWv.setMaxSize(85, 85);
+			instruccionesWv.setMouseTransparent(true);
+
+			regresarWv = new WebView();
+			regresarWv.getEngine().loadContent(htmlRegresar);
+			regresarWv.getStyleClass().add("browser");
+			regresarWv.setMaxSize(60, 60);
+			regresarWv.setMouseTransparent(true);
+
+		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		importarArchivoWv = new WebView();
-		importarArchivoWv.getEngine().loadContent(htmlImportarArchivo);
-		importarArchivoWv.getStyleClass().add("browser");
-		importarArchivoWv.setMaxSize(85, 85);
-		importarArchivoWv.setMouseTransparent(true);
-		
-		
-		instruccionesWv = new WebView();
-		instruccionesWv.getEngine().loadContent(htmlInstrucciones);
-		instruccionesWv.getStyleClass().add("browser");
-		instruccionesWv.setMaxSize(85, 85);
-		instruccionesWv.setMouseTransparent(true);
-		
-		regresarWv = new WebView();
-		regresarWv.getEngine().loadContent(htmlRegresar);
-		regresarWv.getStyleClass().add("browser");
-		regresarWv.setMaxSize(60, 60);
-		regresarWv.setMouseTransparent(true);
-
 		Button bAtras = new Button();
 		Button bInstrucciones = new Button();
 		Button bImportarArchivo = new Button();
-		
 
 		bCerrar.setGraphic(cerrar);
 		bCerrar.setStyle("-fx-background-color: transparent;");
@@ -167,7 +188,7 @@ public class OpcionReferencias extends Feature {
 		bAtras.setGraphic(regresarWv);
 		bAtras.setStyle("-fx-background-color: transparent;-fx-padding:0;");
 		bAtras.setTooltip(new Tooltip("Regresar"));
-		bAtras.setMaxSize(80,80);
+		bAtras.setMaxSize(80, 80);
 		bAtras.setGraphicTextGap(0);
 		bInstrucciones.setGraphic(instruccionesWv);
 		bInstrucciones.setText("Instrucciones");
@@ -175,7 +196,7 @@ public class OpcionReferencias extends Feature {
 		bInstrucciones.setStyle(
 				"-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 13px;-fx-background-color: transparent;-fx-padding:0");
 		bInstrucciones.setContentDisplay(ContentDisplay.TOP);
-		bInstrucciones.setMaxSize(150,105);
+		bInstrucciones.setMaxSize(150, 105);
 		bInstrucciones.setGraphicTextGap(0);
 
 		bImportarArchivo.setGraphic(importarArchivoWv);
@@ -184,9 +205,8 @@ public class OpcionReferencias extends Feature {
 		bImportarArchivo.setStyle(
 				"-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 13px;-fx-background-color: transparent; -fx-padding:0");
 		bImportarArchivo.setContentDisplay(ContentDisplay.TOP);
-		bImportarArchivo.setMaxSize(150,105);
+		bImportarArchivo.setMaxSize(150, 105);
 		bImportarArchivo.setGraphicTextGap(0);
-
 
 		bAtras.setOnMouseClicked(evt -> {
 			if (t.getItems().hashCode() == hashCodeGuardado) {
@@ -264,13 +284,13 @@ public class OpcionReferencias extends Feature {
 				stage.setResizable(false);
 				stage.initOwner(getDesktop().getStage());
 				stage.initModality(Modality.WINDOW_MODAL);
-				stage.setX(getDesktop().getStage().getX()+((getDesktop().getStage().getWidth()-512)/2));
-				stage.setY(getDesktop().getStage().getY()+((getDesktop().getStage().getHeight()-345)/2));
+				stage.setX(getDesktop().getStage().getX() + ((getDesktop().getStage().getWidth() - 512) / 2));
+				stage.setY(getDesktop().getStage().getY() + ((getDesktop().getStage().getHeight() - 345) / 2));
 				stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
-			        if (KeyCode.ESCAPE == event.getCode()) {
-			            stage.close();
-			        }
-			    });
+					if (KeyCode.ESCAPE == event.getCode()) {
+						stage.close();
+					}
+				});
 				stage.showAndWait();
 				getDesktop().desOpacar();
 
@@ -350,7 +370,7 @@ public class OpcionReferencias extends Feature {
 		bInstrucciones.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 
-				if(stage==null){
+				if (stage == null) {
 					stage = new Stage(StageStyle.UNDECORATED);
 
 					StackPane canvas = new StackPane();
@@ -362,37 +382,33 @@ public class OpcionReferencias extends Feature {
 						xOffset = e.getSceneX();
 						yOffset = e.getSceneY();
 
-			        });
-					
+					});
+
 					canvas.setOnMouseDragged(e -> {
 						stage.setX(e.getScreenX() - xOffset);
 						stage.setY(e.getScreenY() - yOffset - 20);
 
-			        });
-					
+					});
+
 					canvas.getChildren().add(bCerrar);
 					StackPane.setAlignment(bCerrar, Pos.TOP_RIGHT);
 
 					bCerrar.setOnMouseClicked(ev -> {
 						stage.hide();
-					});	
+					});
 
-					
-					
 					Label instruccionesLabel = new Label(
 							"Algoritmo Base 10  (1 Dígito Verificador)\nProcedimiento para calcular el Dígito Verificador");
 					instruccionesLabel.setWrapText(true);
 					instruccionesLabel.setTextAlignment(TextAlignment.CENTER);
-					instruccionesLabel
-							.setStyle("-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-font-weight: bold");
+					instruccionesLabel.setStyle(
+							"-fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 14px;-fx-font-weight: bold");
 					instruccionesLabel.setTextFill(Color.web("#828488"));
 					instruccionesLabel.setMinHeight(40);
 					StackPane p = new StackPane();
 					p.setPadding(new Insets(20, 0, 20, 0));
 					p.setStyle("-fx-background-color: white");
 					p.getChildren().add(instruccionesLabel);
-					
-		
 
 					stage.getIcons().add(new Image(getClass().getResourceAsStream("/img/logoSabadellCircle.png")));
 					stage.setTitle("Referencias - Instrucciones");
@@ -431,44 +447,43 @@ public class OpcionReferencias extends Feature {
 							+ "\n\nReferencia Completa: 3142233");
 					textArea.setEditable(false);
 					textArea.setWrapText(true);
-					textArea.setStyle("-fx-background-color:white;-fx-font-family: FranklinGothicLT;-fx-font-size: 14px;-fx-fill:black;-fx-focus-color: transparent; -fx-text-box-border: transparent;-fx-box-border: none;");
+					textArea.setStyle(
+							"-fx-background-color:white;-fx-font-family: FranklinGothicLT;-fx-font-size: 14px;-fx-fill:black;-fx-focus-color: transparent; -fx-text-box-border: transparent;-fx-box-border: none;");
 					textArea.setPrefWidth(790);
 					textArea.setMinWidth(790);
-							
+
 					TabPane tabPane = new TabPane();
 					Tab tabInstrucciones = new Tab("    Instrucciones    ");
 					tabInstrucciones.setClosable(false);
 					StackPane sp = new StackPane();
 					sp.setPrefSize(800, 600);
-					
-					
-					
-					//sp.getChildren().add(textArea);
-					
+
+					// sp.getChildren().add(textArea);
+
 					WebView wv = new WebView();
 					wv.setContextMenuEnabled(false);
 					try {
-						System.out.println(Font.loadFont(getClass().getResourceAsStream("/font/FranklinGothic.ttf"), 14));
-						String html = readFile(getClass().getResourceAsStream("/html/Referencias.html"), Charset.defaultCharset());
+						System.out
+								.println(Font.loadFont(getClass().getResourceAsStream("/font/FranklinGothic.ttf"), 14));
+						String html = readFile(getClass().getResourceAsStream("/html/Referencias.html"),
+								Charset.defaultCharset());
 						String rutaImg = getClass().getResource("/html/img").toString();
 						html = html.replaceAll("<ruta_img>", rutaImg);
 						wv.getEngine().loadContent(html);
-						//wv.getEngine().setUserStyleSheetLocation("data:,td { font-family: FranklinGothicLT; font-size:13px;}");
+						// wv.getEngine().setUserStyleSheetLocation("data:,td {
+						// font-family: FranklinGothicLT; font-size:13px;}");
 						wv.setPrefSize(800, 600);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					
-					
+
 					sp.getChildren().add(wv);
-					sp.setPadding(new Insets(0,0,0,30));
+					sp.setPadding(new Insets(0, 0, 0, 30));
 					sp.setStyle("-fx-background-color:white;-fx-border-color:transparent; -fx-border-width:5;");
 					tabInstrucciones.setContent(sp);
-					
+
 					tabPane.getTabs().addAll(tabInstrucciones);
-					
-					
 
 					VBox vbox = new VBox();
 					textArea.prefHeightProperty().bind(vbox.prefHeightProperty().add(-60));
@@ -479,17 +494,16 @@ public class OpcionReferencias extends Feature {
 					vbox.getChildren().add(p);
 					vbox.getChildren().add(tabPane);
 					vbox.setStyle("-fx-background-color:white;-fx-border-color:lightgray; -fx-border-width:2px;");
-					Scene scene = new Scene(vbox,820,600);
+					Scene scene = new Scene(vbox, 820, 600);
 					scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 					stage.setScene(scene);
 					stage.setResizable(false);
 					stage.show();
-					
-				}else{
+
+				} else {
 					stage.show();
 					stage.toFront();
 				}
-				
 
 			}
 		});
@@ -501,7 +515,7 @@ public class OpcionReferencias extends Feature {
 
 		t = new ReferenciaTable();
 		hashCodeGuardado = t.getItems().hashCode();
-		//t.getStyleClass().add("tabla-referencias");
+		// t.getStyleClass().add("tabla-referencias");
 
 		t.setMaxSize(800, 400);
 
@@ -569,13 +583,13 @@ public class OpcionReferencias extends Feature {
 						stage.setResizable(false);
 						stage.initOwner(getDesktop().getStage());
 						stage.initModality(Modality.WINDOW_MODAL);
-						stage.setX(getDesktop().getStage().getX()+((getDesktop().getStage().getWidth()-512)/2));
-						stage.setY(getDesktop().getStage().getY()+((getDesktop().getStage().getHeight()-345)/2));
+						stage.setX(getDesktop().getStage().getX() + ((getDesktop().getStage().getWidth() - 512) / 2));
+						stage.setY(getDesktop().getStage().getY() + ((getDesktop().getStage().getHeight() - 345) / 2));
 						stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
-					        if (KeyCode.ESCAPE == event.getCode()) {
-					            stage.close();
-					        }
-					    });
+							if (KeyCode.ESCAPE == event.getCode()) {
+								stage.close();
+							}
+						});
 						stage.showAndWait();
 						getDesktop().desOpacar();
 					}
@@ -634,7 +648,7 @@ public class OpcionReferencias extends Feature {
 				canvas.setPadding(new Insets(5));
 				canvas.setStyle("-fx-background-color: #ff5120;");
 				canvas.setPrefSize(512, 54);
-				
+
 				canvas.getChildren().add(bCerrar);
 				StackPane.setAlignment(bCerrar, Pos.TOP_RIGHT);
 
@@ -649,7 +663,7 @@ public class OpcionReferencias extends Feature {
 				Button bContinuar = new Button("Continuar");
 				bContinuar.setStyle(
 						"-fx-background-color: #006dff;  -fx-font-family: FranklinGothicLT-Demi;-fx-font-size: 15px;");
-				bContinuar.setPrefSize(140,40);
+				bContinuar.setPrefSize(140, 40);
 				bContinuar.setTextFill(Color.WHITE);
 
 				bContinuar.setOnMouseClicked(evt -> {
@@ -662,7 +676,7 @@ public class OpcionReferencias extends Feature {
 				vbox.setAlignment(Pos.TOP_CENTER);
 				vbox.getChildren().add(canvas);
 				vbox.getChildren().add(error);
-				mensaje.setPadding(new Insets(0,0,35,0));
+				mensaje.setPadding(new Insets(0, 0, 35, 0));
 				vbox.getChildren().add(mensaje);
 				vbox.getChildren().add(bContinuar);
 
@@ -670,13 +684,13 @@ public class OpcionReferencias extends Feature {
 				stage.setResizable(false);
 				stage.initOwner(getDesktop().getStage());
 				stage.initModality(Modality.WINDOW_MODAL);
-				stage.setX(getDesktop().getStage().getX()+((getDesktop().getStage().getWidth()-512)/2));
-				stage.setY(getDesktop().getStage().getY()+((getDesktop().getStage().getHeight()-345)/2));
+				stage.setX(getDesktop().getStage().getX() + ((getDesktop().getStage().getWidth() - 512) / 2));
+				stage.setY(getDesktop().getStage().getY() + ((getDesktop().getStage().getHeight() - 345) / 2));
 				stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
-			        if (KeyCode.ESCAPE == event.getCode()) {
-			            stage.close();
-			        }
-			    });
+					if (KeyCode.ESCAPE == event.getCode()) {
+						stage.close();
+					}
+				});
 				stage.showAndWait();
 				getDesktop().desOpacar();
 				return false;
@@ -754,13 +768,13 @@ public class OpcionReferencias extends Feature {
 						stage.setResizable(false);
 						stage.initOwner(getDesktop().getStage());
 						stage.initModality(Modality.WINDOW_MODAL);
-						stage.setX(getDesktop().getStage().getX()+((getDesktop().getStage().getWidth()-512)/2));
-						stage.setY(getDesktop().getStage().getY()+((getDesktop().getStage().getHeight()-345)/2));
+						stage.setX(getDesktop().getStage().getX() + ((getDesktop().getStage().getWidth() - 512) / 2));
+						stage.setY(getDesktop().getStage().getY() + ((getDesktop().getStage().getHeight() - 345) / 2));
 						stage.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
-					        if (KeyCode.ESCAPE == event.getCode()) {
-					            stage.close();
-					        }
-					    });
+							if (KeyCode.ESCAPE == event.getCode()) {
+								stage.close();
+							}
+						});
 						stage.showAndWait();
 						getDesktop().desOpacar();
 						return true;
@@ -785,7 +799,7 @@ public class OpcionReferencias extends Feature {
 		getDesktop().setWorkArea(null);
 		getDesktop().updatePleca("white", null);
 	}
-	
+
 	static String readFile(InputStream in, Charset encoding) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		StringBuffer response = new StringBuffer();
@@ -807,12 +821,11 @@ public class OpcionReferencias extends Feature {
 		sb.append("</svg></body></html>");
 		return sb.toString();
 	}
-	
+
 	private String getHtml(int image, String svg) {
 		StringBuffer sb = new StringBuffer();
-		sb.append(String.format(
-				"<html><head></head><body>"));
-		
+		sb.append(String.format("<html><head></head><body>"));
+
 		sb.append(String.format("<svg width='%d' height='%d'>", image, image));
 		sb.append(svg);
 		sb.append("</svg></body></html>");
